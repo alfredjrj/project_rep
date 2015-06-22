@@ -18,4 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^humour/' , include('userprofile.urls',namespace="userprofile")),
+    url(r'^humour/home/' , include('canvas.urls', namespace="canvas")),
 ]
+
+

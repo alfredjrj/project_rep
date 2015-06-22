@@ -1,0 +1,72 @@
+#canvas_post_button {
+    position: relative;
+    left: 450px;
+    top: -25px;
+    color:purple ;
+    width:53px;
+    height:25px;
+
+
+}
+
+#canvas_comment_text {
+    position: relative;
+    left: -430px;
+    top: 25px;
+}
+
+
+.center_column{
+    background-color: #EEF8F8 ;
+    position: relative;
+    left: 350px;
+    top:75px;
+
+
+}
+
+
+
+.canvas{
+    border:1px solid #d3d3d3;
+	background-color:white;
+}
+.commentbutton{
+position: relative;
+    top: 20px;
+    left: -410px;
+    color:purple;
+
+}
+.more_commentslink{
+
+    position: relative;
+    top: 20px;
+    left: -300px;
+    
+}
+
+.comment_canvas{
+     display: none;
+}
+
+
+
+.child_canvas_user_name{
+position: relative;
+   	top: 40px;
+ }
+
+.children {
+	position: relative;
+    left: 100px;
+    top: 10px;
+    background-color:white; 
+} 
+
+
+#canvas_user_date{
+    position: relative;
+    top: 15px;
+   
+} 

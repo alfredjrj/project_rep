@@ -1,0 +1,13 @@
+
+<h1> {{user.username}} </h1>
+<h1> follows </h1>
+{% for follows_who in following %}
+	<li> {{follows_who.user.username}} </li>
+
+{% endfor %}
+
+<form action="{% url 'userprofile:logout_user'  %}" method="post">
+{% csrf_token %}
+<input type="submit" , value= "logout" />
+
+</form>

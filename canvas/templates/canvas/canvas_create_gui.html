@@ -1,0 +1,24 @@
+
+
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'canvas/ajax_canvas_post.js' %}"></script>
+<script type="text/javascript" src="{% static 'canvas/canvaswrite.js' %}"></script>
+
+<canvas  class = "canvas" id="{{canvas_html_input_id }}canvas" width="550" height="275" >
+Your browser does not support the HTML5 canvas tag.</canvas><br>
+
+<input type="text" onkeyup= "canvas_write(this)" id="{{canvas_html_input_id}}" size="43" maxlength="350" />
+
+
+
+<form  method="post"  id= "{{canvas_html_input_id }}canvas_form"  >
+	<input  id= "canvas_post_button" type="submit"  value="POST"  />
+</form>
+
+<script>
+ajax_create_canvas("{{canvas_html_input_id }}canvas_form" ,"{{canvas_html_input_id }}" )
+</script>
+
+
+
+

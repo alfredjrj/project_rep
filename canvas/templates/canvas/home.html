@@ -1,0 +1,80 @@
+
+{% load staticfiles %}
+<head>
+
+	<link rel="stylesheet" href="{% static 'canvas/styles.css' %}" type="text/css"> 
+	<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="{% static 'canvas/canvasrender.js' %}"></script>
+	
+</head>
+
+	<script>
+	$(document).ready(function(){
+	    $(".commentbutton").click(function(){
+	        $(".comment_canvas").show();
+	    });
+	});
+	</script>
+
+
+
+
+
+<div class= "center_column">
+	{% include "canvas/canvas_create_gui.html" with canvas_html_input_id="text_cnv" %}
+
+
+
+    {% for canvas in user_canvas_set %}
+
+	<p id= "canvas_user_date"> {{canvas.user}}   {{canvas.pub_date}}  
+	 <a  href="{% url 'canvas:delete_canvas_post' canvas.id %}" >delete</a>
+
+
+
+	 </p> 
+	<canvas  class = "canvas" id="{{canvas.id}}" width="400" height="200">
+	Your browser does not support the HTML5 canvas tag.</canvas>
+	<script>
+	canvasrenderNP.canvaswrite("{{canvas.id}}","{{canvas.canvas_post}}")
+    </script>
+    
+    {%if not canvas.last_child_canvas %}
+		<button class= "commentbutton"  > comment </button>
+		<div class= "comment_canvas"  > 
+		 {% include "canvas/canvas_create_gui.html" with canvas_html_input_id=canvas.id %}
+	
+		</div>
+	{% else %}
+	{% endif %}
+
+
+
+
+		
+
+	{%for canvas_children in canvas.last_child_canvas %}
+			
+			 <a href="id" class="more_commentslink" >more comments </a>
+			<li class = "child_canvas_user_name"><a href="{% url 'userprofile:other_userpofile' canvas_children.user.id %}">{{ canvas_children.user }}</a></li>
+
+
+			<canvas id="{{canvas_children.id}}" class = "children"  width="300" height="150" style="border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>
+
+			<script>
+			canvasrenderNP.canvaswrite("{{canvas_children.id}}","{{canvas_children.canvas_post}}")
+			</script> 
+		   	
+
+	{% endfor %}
+
+
+
+
+{% endfor %}
+
+</div>
+
+	
+

@@ -1,3 +1,25 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+class Canvas(models.Model):
+	user= models.ForeignKey(User)
+	parent = models.ManyToManyField("self", symmetrical=False , related_name='children')
+	canvas_post = models.CharField(max_length=400)
+	pub_date = models.DateTimeField('date published')
+
+	def __str__(self):
+		return self.canvas_post
+
+	def last_child_canvas(self):
+		 return self.children.order_by('pub_date')[:1]
+
+
+class Texts_In_Canvas(models.Model):
+	canvas = models.ForeignKey(Canvas)
+	canvas_texts = models.CharField(max_length=200)
+	coordinates_x = models.IntegerField(default=0)
+	coordinates_y = models.IntegerField(default=0)
+	
+
+	def __str__(self):
+		return self.canvas_texts

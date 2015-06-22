@@ -9,6 +9,5 @@ class UserProfile(models.Model):
 	user = AutoOneToOneField(User)
 	follows = models.ManyToManyField('UserProfile', related_name='followed_by')
 
-
-    def __str__(self):
-        return self.user.username
+	def __str__(self):
+		return self.user.username
