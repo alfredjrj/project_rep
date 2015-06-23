@@ -1,0 +1,63 @@
+
+#canvas_comment_text {
+    position: relative;
+    left: -430px;
+    top: 25px;
+}
+
+
+.center_column{
+    background-color: #EEF8F8 ;
+    position: relative;
+    width: 560px;
+    left: 350px;
+    top:75px;
+
+
+}
+
+
+
+.canvas{
+    border:1px solid #d3d3d3;
+	background-color:white;
+}
+
+
+.delete_post_link{
+
+    color:purple;
+}
+.more_commentslink{
+
+    position: relative;
+    color:purple;
+    top: 20px;
+    left: -300px;
+    
+}
+
+.comment_canvas{
+     display: none;
+}
+
+
+
+.child_canvas_user_name{
+position: relative;
+   	top: 40px;
+ }
+
+.children {
+	position: relative;
+    left: 100px;
+    top: 10px;
+    background-color:white; 
+} 
+
+
+.canvas_heading{
+    position: relative;
+    top: 15px;
+   
+} 

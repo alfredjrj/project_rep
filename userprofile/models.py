@@ -11,3 +11,16 @@ class UserProfile(models.Model):
 
 	def __str__(self):
 		return self.user.username
+
+
+class UserMethods(User):
+
+	def canvas_ids_list(self):
+		canvasids = []
+		for canvas in self.canvas_set.all():
+			canvasids.append(canvas.id)
+
+		return canvasids
+
+	class Meta:
+		proxy=True

@@ -13,6 +13,22 @@ class Canvas(models.Model):
 	def last_child_canvas(self):
 		 return self.children.order_by('pub_date')[:1]
 
+	def canvas_recursive_delete(self, canvas_id):
+		""" Deltes the all of the children of the parent with 
+		 the corrosponding canvas_id and then deletes the parent
+
+		"""
+		canvas_obj_to_del = Canvas.objects.filter(id=canvas_id)
+
+		if canvas_obj_to_del[0].children.all() :
+			canvas_obj_to_del[0].children.all().delete()
+		
+		canvas_obj_to_del.delete()
+
+		return None
+
+
+
 
 class Texts_In_Canvas(models.Model):
 	canvas = models.ForeignKey(Canvas)
