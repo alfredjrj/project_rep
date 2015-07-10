@@ -21,6 +21,8 @@
 .canvas{
     border:1px solid #d3d3d3;
 	background-color:white;
+     width: 550px;
+     height: 275px;
 }
 
 
@@ -32,13 +34,20 @@
 
     position: relative;
     color:purple;
-    top: 20px;
-    left: -300px;
+    top: 10px;
+    left:100px;
     
 }
 
+.child_canvas_user_name{
+    color:purple;
+}
+
 .comment_canvas{
-     display: none;
+    display: none;
+    position: relative;
+    top: 20px;
+
 }
 
 
@@ -48,11 +57,14 @@ position: relative;
    	top: 40px;
  }
 
-.children {
+.child_canvases {
+    border:1px solid #d3d3d3;
 	position: relative;
     left: 100px;
-    top: 10px;
+    top: -10px;
     background-color:white; 
+    width: 400px;
+    height: 200px;
 } 
 
 

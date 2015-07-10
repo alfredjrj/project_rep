@@ -1,19 +1,22 @@
 
 {% load staticfiles %}
+<html>
 <head>
+
+	<script>var user_canvas_ids = "{{ user_canvas_ids }}"</script>
 	<link rel="stylesheet" href="{% static 'canvas/style/styles.css' %}" type="text/css"> 
 	<link rel="stylesheet" href="{% static 'canvas/style/buttons.css' %}" type="text/css"> 
 	<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="{% static 'canvas/canvasrender.js' %}"></script>
 	<script type="text/javascript" src="{% static 'canvas/canvas_comment_button.js' %}"></script>
+	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/canvaswrite.js' %}"></script>
 </head>
 
 
-
-<button id= "but" onclick="check()"  > click </button>
-
 <div class= "center_column">
 	{% include "canvas/canvas_create_gui.html" with canvas_html_input_id=0 %}
+
+	
 
    	{% for canvas in user_canvas_set %}
 	    {% if not canvas.parent.all %}
@@ -23,15 +26,11 @@
 			{{canvas.user}}   {{canvas.pub_date}}  <a class= "delete_post_link" href="{% url 'canvas:delete_canvas_post' canvas.id %}" >delete</a>
 		 </p> 
 
-		<canvas  class = "canvas" id="{{canvas.id}}" width="400" height="200" 
-		canvas_post= ""{{canvas.canvas_post}}"" >
+		<canvas  class = "canvas" id="{{canvas.id}}"
+		canvas_post= "{{canvas.canvas_post}}" >
 		Your browser does not support the HTML5 canvas tag.</canvas>
 
-		<script>
-		
-		canvasrenderNP.canvaswrite("{{canvas.id}}","{{canvas.canvas_post}}")
-	    </script>
-	    
+			    
 		    {%if not canvas.last_child_canvas %}
 				<button class= "canvas_comment_button"  > comment </button>
 				<div class= "comment_canvas"  > 
@@ -42,14 +41,19 @@
 
 		{% endif %}	
 
+		
 			{%for canvas_children in canvas.last_child_canvas %}		
 				{% include "canvas/canvas_comments.html" %}
 			{% endfor %}
 
 
-	{% endfor %}
 
+	{% endfor %}
+	
 </div>
+</html>
 
 	
+
+
 

@@ -1,23 +1,57 @@
 
-
 {% load staticfiles %}
 <!--<script type="text/javascript" src="{% static 'canvas/ajax_canvas_post.js' %}"></script>-->
-<script type="text/javascript" src="{% static 'canvas/canvaswrite.js' %}"></script>
+<head>
+
+<script> var cavas_ids = "{{canvas_html_input_id}}canvas" </script>
+<!-- purpose, to keep reference to the canvas id in canvas wirte js  -->
+<link rel="stylesheet" href="{% static 'canvas/style/canvas_create_gui.css' %}" type="text/css"> 
+
+<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/create_gui_settings.js' %}"></script>
+
+</head>
 
 
-<canvas  class = "canvas" id="{{canvas_html_input_id }}canvas" width="550" height="275" >
+<input type="button" ref_canvas_id="{{canvas_html_input_id}}" class="add_texts" id="{{canvas_html_input_id}}add_texts" value="+ text">
+<select id= "{{canvas_html_input_id }}font_selector">
+  <option value="Arial">Arial</option>
+  <option value="Helvetic"> Helvetic</option>
+  <option value="Comic Sans MS">Comic Sans MS</option>
+  <option value="Times New Roman">Times New Roman</option>
+  <option value="Georgia"> Georgia</option>
+  <option value="Impact"> Impact</option>
+</select>
+
+<select id= "draw_tool_selector">
+  <option value="Draw">Draw</option>
+  <option value="Rectangle">Rectangle </option>
+  <option value="Circle">Circle</option>
+  <option value="line">Line</option>
+ </select>
+
+<input id="{{canvas_html_input_id }}size_selector" value='15'  type="number" name="quantity" min="15" max="70" class="size_selector">
+  
+
+<canvas  class = "canvas_create" id="{{canvas_html_input_id}}canvas"  >
 Your browser does not support the HTML5 canvas tag.</canvas><br>
+
+<input   
+ id= "{{canvas_html_input_id}}in_canvas_input" ref_canvas_id="{{canvas_html_input_id}}" class= "in_canvas_input"  draggable="true"   type="text"/> 
+
 
 
 <form action="{% url 'canvas:create_canvas_post' canvas_html_input_id   %}"  
 method="post"  id= "{{canvas_html_input_id }}canvas_form"  >
 {% csrf_token %}
 
-	<input type="text" onkeyup= "canvas_write(this)"   
-	name= "canvas_post" id="{{canvas_html_input_id}}" size="43" maxlength="350" />
+	<input type="text" name= "canvas_post" class="create_canvas_post" id="{{canvas_html_input_id}}" size="38" maxlength="370" />
 
-	<input  id= "canvas_post_button" type="submit"   value="post"  />
+	<input  class= "canvas_post_button" type="submit"   value="post"  />
 </form>
+
+	<input  class= "canvas_fbshare_button" type="submit"   value="fbshare"  />
+
+
 
 <!--
 <script>

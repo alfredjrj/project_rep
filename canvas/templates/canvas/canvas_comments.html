@@ -1,13 +1,11 @@
 
  <a href="id" class="more_commentslink" >more comments </a>
-<li class = "child_canvas_user_name"><a href="{% url 'userprofile:other_userpofile' canvas_children.user.id %}">{{ canvas_children.user }}</a></li>
+<p ><a class = "child_canvas_user_name" href="{% url 'userprofile:other_userpofile' canvas_children.user.id %}">{{ canvas_children.user }}</a></p>
 
 
-<canvas id="{{canvas_children.id}}" class = "children"  width="300" height="150" style="border:1px solid #d3d3d3;">
+<canvas id="{{canvas_children.id}}" class = "child_canvases"  
+canvas_post= "{{canvas_children.canvas_post}}" >
 Your browser does not support the HTML5 canvas tag.</canvas>
 
 
-<script>
-canvasrenderNP.canvaswrite("{{canvas_children.id}}","{{canvas_children.canvas_post}}")
-</script> 
 

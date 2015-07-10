@@ -1,0 +1,34 @@
+
+
+#font_brush_size_selector{
+	width:50px;
+}
+
+
+.in_canvas_input{
+
+	
+	opacity: 0.0;
+	position: absolute;
+	top:150px;
+	left:370px;
+	z-index:1;
+
+
+}
+
+.canvas_create{
+	border:1px solid #d3d3d3;
+	background-color:white;
+	width: 550px;
+    height: 275px;
+
+
+}
+
+
+
+.size_selector{
+
+width:40;
+}
