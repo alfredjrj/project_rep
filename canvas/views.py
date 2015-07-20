@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse 
 from django.contrib.auth import authenticate, login, logout
@@ -21,17 +22,26 @@ def home(request):
 def create_canvas_post(request, canvas_id):
 	if request.method == 'POST':
 		canvas_post_text = request.POST.get('canvas_post')
+		font_size = request.POST.get('font_size')
+		post_font = request.POST.get('post_font')
 		canvas_post_obj = request.user.canvas_set.create(canvas_post= canvas_post_text, 
-			pub_date= timezone.now() )
+		pub_date= timezone.now(), font_size= font_size, post_font= post_font)
+		canvas_post_obj.save()
 
-		if canvas_id == '0' :		
-			canvas_post_obj.save() 
-			return HttpResponseRedirect(reverse('canvas:home' )) 
-		else:		
+		data = {}
+		data['something'] = 'useful'
+    
+		if canvas_id == '0' :
+			pass	
+
+		
+		else:	
 			parent_canvas_obj = Canvas.objects.get(id=canvas_id)
 			parent_canvas_obj.children.add(canvas_post_obj)
 
-			return HttpResponseRedirect(reverse('canvas:home' )) 
+	return HttpResponse(json.dumps(data), content_type = "application/json")
+
+	
 
 
 def delete_canvas_post(request, canvas_id):

@@ -3,7 +3,7 @@
 <p ><a class = "child_canvas_user_name" href="{% url 'userprofile:other_userpofile' canvas_children.user.id %}">{{ canvas_children.user }}</a></p>
 
 
-<canvas id="{{canvas_children.id}}" class = "child_canvases"  
+<canvas id="{{canvas_children.id}}" class = "child_canvases"  data-post-font-size = "{{canvas_children.font_size}}" data-post-font= "{{canvas.post_font}}" 
 canvas_post= "{{canvas_children.canvas_post}}" >
 Your browser does not support the HTML5 canvas tag.</canvas>
 
