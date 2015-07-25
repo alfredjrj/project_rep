@@ -7,10 +7,10 @@ class Canvas(models.Model):
 	parent = models.ManyToManyField("self", symmetrical=False , related_name='children')
 	canvas_post = models.CharField(max_length=400)
 	pub_date = models.DateTimeField('date published')
-	post_font= models.CharField(max_length=100, default="Arial")
-	font_size= models.PositiveIntegerField(validators=[MinValueValidator(6),
-                                    MaxValueValidator(100)], default=12)
-	post_color= models.CharField(max_length=100, default="black")
+	# post_font= models.CharField(max_length=100, default="Arial")
+	# font_size= models.PositiveIntegerField(validators=[MinValueValidator(6),
+ #                                    MaxValueValidator(100)], default=12)
+	# post_color= models.CharField(max_length=100, default="black")
 
 	def __str__(self):
 		return self.canvas_post
@@ -37,14 +37,14 @@ class Canvas(models.Model):
 
 class Texts_In_Canvas(models.Model):
 	canvas = models.ForeignKey(Canvas)
-	canvas_texts = models.CharField(max_length=200)
+	canvas_text = models.CharField(max_length=200)
 	coordinates_x = models.IntegerField(default=0)
 	coordinates_y = models.IntegerField(default=0)
 	text_font= models.CharField(max_length=100, default="Arial")
-	font_size= models.PositiveIntegerField(validators=[MinValueValidator(6),
+	text_size= models.PositiveIntegerField(validators=[MinValueValidator(6),
                                     MaxValueValidator(100)], default=12)
 	text_color= models.CharField(max_length=100, default="black")
 	
 
 	def __str__(self):
-		return self.canvas_texts
+		return self.canvas_text

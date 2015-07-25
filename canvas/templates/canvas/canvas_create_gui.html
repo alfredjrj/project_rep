@@ -9,47 +9,28 @@
  
 
 
-<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/create_gui_settings.js' %}"></script>
+
 
 
 </head>
-<div id="tabs">
+<div class="tabs">
   <ul>
-    <li><a href="#tabs-1">TEXT</a></li>
-    <li><a href="#tabs-2">DRAW</a></li>
-    <li><a href="#tabs-3">IMAGES</a></li>
+    <li><a href="#tabs-1" style="width:107px">  TEXT  </a></li>
+    <li><a href="#tabs-2" style="width:105px">  DRAW  </a></li>
+    <li><a href="#tabs-3" style="width:105px">  IMAGES </a></li>
+    <li><a href="#tabs-3" style="width:105px">  VIDEO  </a></li>
+    <li><a href="#tabs-3" style="width:107px">  SOUND  </a></li>
   </ul>
 </div>
 
-<!-- <div class="well">
-  <div class="row">
-    <div class="col-md-5">
-      <div class="form-group"> -->
-       
-        <input type="hidden" id="{{canvas_html_input_id}}colour" class="form-control demo" data-control="hue" value="#000000" >
-  <!--     </div>
-    </div>
-  </div>     
-</div> -->
- 
-<!--       <div class="form-group">
-        <label for="saturation-demo">Saturation</label>
-        <input type="text" id="saturation-demo" class="form-control demo" data-control="saturation" value="#0088cc">
-      </div>
-    </div>
-<div class="well">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <input type="text" id="inlinecolors" class="form-control" data-inline="true" value="#4fc8db">
-      </div>
-    </div>
- 
-    <div id="inlinecolorhex" class="col-md-8">
-      <h3>Current selection: <small>#4fc8db</small></h3>
-    </div>
-  </div>
-</div> -->
+
+   
+    <input type="hidden" id="{{canvas_html_input_id}}colour" class="form-control demo" data-control="hue" value="#000000" >
+
+
+
+
+
 
 
 <input type="button" ref_canvas_id="{{canvas_html_input_id}}" class="add_texts" id="{{canvas_html_input_id}}add_texts" value="+ text">
@@ -74,34 +55,75 @@ style="width:100px">
  </select>
 
 <input id="{{canvas_html_input_id }}size_selector" value='15'  type="number" name="quantity" min="15" max="70" class="size_selector">
+
+
+<button id="{{canvas_html_input_id }}layers_button" data-layers-dialog-id="{{canvas_html_input_id }}layer_dialog"  class="layers_button" style="width:230px">layers</button>
+
+<div class="layers_dialog" id="{{canvas_html_input_id }}layer_dialog"
+ title="layers" >
+
+<div class="layers" id="{{canvas_html_input_id }}layers"   >
+
+
+
+</div>  
+</div>  
+
   
+
+
 <div id = "{{canvas_html_input_id}}canvas_create_div">
 
 <canvas  class = "canvas_create" id="{{canvas_html_input_id}}canvas"  >
 Your browser does not support the HTML5 canvas tag.</canvas><br>
-
-
 
 </div>
 
 
 
 
-<form   id= "{{canvas_html_input_id }}canvas_form"  >
+<form   id= "{{canvas_html_input_id }}canvas_form" class="canvas_form" data-ref-canvas-id ="{{canvas_html_input_id }}"   >
 
 
 	<input type="text" class="create_canvas_post" id="{{canvas_html_input_id}}input" 
   ref_canvas_id="{{canvas_html_input_id}}" data-post-font-size="0" data-post-font="none" size="38" maxlength="370" />
 
-	<input  class= "canvas_post_button" type="submit"   value="post"  />
+	<input  class= "canvas_post_button" type="submit" data-ref-canvas-id ="{{canvas_html_input_id }}"  value="post"  />
 </form>
 
 
 <script>
 
   $(function() {
-    $( "#tabs" ).tabs();
+    $( ".tabs" ).tabs();
   });
+
+   $(".layers_button").button();
+
+
+
+$(function() {
+      $( ".layers_dialog" ).dialog({
+        width: 232,
+        autoOpen: false
+
+     
+      });
+    });
+  
+
+
+
+  $('.layers_button').click(function() {
+     var dialog_id = $(this).attr('data-layers-dialog-id');
+     $('#'+ dialog_id).dialog({
+        position:{ my: "left top", at: "left top", of: this }
+      });
+      $('#'+ dialog_id).dialog('open')
+
+      
+  });
+
 
   var colpick = $('.demo').each( function() {
     $(this).minicolors({
@@ -122,40 +144,33 @@ Your browser does not support the HTML5 canvas tag.</canvas><br>
     });
   });
 
-  //  var $inlinehex = $('#inlinecolorhex h3 small');
-  // $('#inlinecolors').minicolors({
-  //   inline: true,
-  //   theme: 'bootstrap',
-  //   change: function(hex) {
-  //     if(!hex) return;
-  //     $inlinehex.html(hex);
-  //   }
-  // });
 
 
 
 
-$("#canvas_post_button").button();
-
-$("#{{canvas_html_input_id }}canvas_form").submit(function(evt){
-    evt.preventDefault();
-
- var postdata={
-              'canvas_post':$('#{{canvas_html_input_id}}input').val() , 
-              'post_font':$('#{{canvas_html_input_id}}input').attr('data-post-font'),
-              'font_size':$('#{{canvas_html_input_id}}input').attr('data-post-font-size'),
-              'csrfmiddlewaretoken': '{{ csrf_token }}',      
-         }
+$(".canvas_post_button").button();
 
 
 
-  $.post("{% url 'canvas:create_canvas_post' canvas_html_input_id   %}", postdata , function(){location.reload() ;
-    $('#{{canvas_html_input_id}}input').val("") ;
+// $("#{{canvas_html_input_id }}canvas_form").submit(function(evt){
+//     evt.preventDefault();
 
-    }, "json")
+//  var postdata={
+//               'canvas_post':$('#{{canvas_html_input_id}}input').val() , 
+//               'post_font':$('#{{canvas_html_input_id}}input').attr('data-post-font'),
+//               'font_size':$('#{{canvas_html_input_id}}input').attr('data-post-font-size'),
+//               'csrfmiddlewaretoken': '{{ csrf_token }}',      
+//          }
 
 
-});
+
+//   $.post("{% url 'canvas:create_canvas_post' canvas_html_input_id   %}", postdata , function(){location.reload() ;
+//     $('#{{canvas_html_input_id}}input').val("") ;
+
+//     }, "json")
+
+
+// });
 
 
 </script>
@@ -166,7 +181,6 @@ ajax_create_canvas("{{canvas_html_input_id }}canvas_form" ,"{{canvas_html_input_
 </script>
 
 -->
-
 
 
 

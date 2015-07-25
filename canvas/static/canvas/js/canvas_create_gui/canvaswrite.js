@@ -24,10 +24,18 @@ var canvaswriteNP= (function() {
 
         in_canvas_input_elm.setAttribute('data-font-size',create_gui_settingsNP.get_size(ref_canvas_id) );
         in_canvas_input_elm.setAttribute('data-font', create_gui_settingsNP.get_font(ref_canvas_id)  );
-        in_canvas_input_elm.setAttribute('data-colour',create_gui_settingsNP.get_colour(ref_canvas_id) );
+        in_canvas_input_elm.setAttribute('data-color',create_gui_settingsNP.get_colour(ref_canvas_id) );
         in_canvas_input_elm.setAttribute('data-opacity',create_gui_settingsNP.get_opacity(ref_canvas_id) );
-        in_canvas_input_elm.setAttribute('x_pos',"na" );
-        in_canvas_input_elm.setAttribute('y_pos',"na" );
+    
+
+
+        var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
+        var incanvas_input_dim = in_canvas_input_elm.getBoundingClientRect();
+        var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, incanvas_input_dim);
+
+        in_canvas_input_elm.setAttribute('data-x-pos', Math.round(mousePos.x) );
+        in_canvas_input_elm.setAttribute('data-y-pos',  Math.round(mousePos.y) );
+
 
     }
 
@@ -98,7 +106,7 @@ var canvaswriteNP= (function() {
 
             var canvas_content = canvas_create_elm.getContext('2d');
             // sets maximum line width, line height, and x /y coords for text
-            var maxWidth = canvas_create_elm.width - 10;
+            var maxWidth = canvas_create_elm.width - 20;
             var lineHeight = 23;
             var pos = (canvas_create_elm.width - maxWidth) / 2;
             
@@ -109,13 +117,15 @@ var canvaswriteNP= (function() {
 
                 var incanvas_input_font_size = $("#"+canvas_create_div_incanvas_inputs[i].id).attr('data-font-size');
                 var incanvas_input_font= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-font');
-                var incanvas_input_colour= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-colour');
+                var incanvas_input_color= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-color');
                 var incanvas_input_opacity= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-opacity');
                 
                 var incanvas_input_dim = canvas_create_div_incanvas_inputs[i].getBoundingClientRect();
                 var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, incanvas_input_dim);
                 this.addTextCnv(canvas_content, canvas_create_div_incanvas_inputs[i].value, mousePos.x, mousePos.y, maxWidth, lineHeight, incanvas_input_font, 
-                    incanvas_input_font_size, incanvas_input_colour, incanvas_input_opacity);
+                    incanvas_input_font_size, incanvas_input_color, incanvas_input_opacity);
+
+
             }
 
         },
@@ -131,6 +141,31 @@ var canvaswriteNP= (function() {
              in_canvas_input.style.opacity= "0.9";
              return ;  
         },
+
+
+
+        display_layers: function(ref_canvas_id){
+
+
+            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
+            var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
+            var layers_div = document.getElementById(ref_canvas_id+"layers" );
+            $(layers_div).empty();
+
+            for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
+                var layer_color = document.createElement("div");
+                    layer_color.className= "layer_colour";
+                    layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
+                    layers_div.appendChild(layer_color);
+
+                var layer_info = document.createElement("P");
+                    layer_info.className= "layer_info";
+                    layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
+                    layers_div.appendChild(layer_info);
+            }
+             return ;  
+        },
+
 
         
           
@@ -154,10 +189,9 @@ var canvaswriteNP= (function() {
             incanvas_input.setAttribute( "ref_canvas_id",ref_canvas_id );
             
             incanvas_input_div.appendChild(incanvas_input);
-            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
-            
-            canvas_create_div.appendChild(incanvas_input_div);
 
+            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
+            canvas_create_div.appendChild(incanvas_input_div);
 
 
             var in_canvas_input_elm = document.getElementById(ref_canvas_id+"in_canvas_input" + click);
@@ -174,9 +208,9 @@ var canvaswriteNP= (function() {
 
       
             document.addEventListener("mousemove" , function(event){
-            var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, event);
-            console.log(mousePos);
-            console.log("x" + event.clientX +"" + "y" + event.clientY   );
+                var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, event);
+                console.log(mousePos);
+                console.log("x" + event.clientX +"" + "y" + event.clientY   );
             });   
 
 
@@ -185,6 +219,9 @@ var canvaswriteNP= (function() {
                 cancel:null ,
               
                 stop: function( event, ui ){
+
+                        canvaswriteNP.display_layers(ref_canvas_id);
+
                         canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, canvas_create_div_incanvas_inputs, ref_canvas_id );     
                  
                 }
@@ -209,7 +246,8 @@ var canvaswriteNP= (function() {
 
 
 $(document).ready(function(){
-    
+
+
 
 
     create_gui_settingsNP.define_canvas_dim("canvas_create");

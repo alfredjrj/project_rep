@@ -85,6 +85,8 @@ $(document).ready(function(){
 	// $(".add_texts").button();
 	// $( ".font_selector" ).selectmenu();
 	$("input[type=submit]").button();
+	
+
 
 
 });

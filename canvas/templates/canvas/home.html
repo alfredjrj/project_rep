@@ -13,9 +13,12 @@
 
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+
 	<script type="text/javascript" src="{% static 'canvas/canvasrender.js' %}"></script>
 	<script type="text/javascript" src="{% static 'canvas/canvas_comment_button.js' %}"></script>
 	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/canvaswrite.js' %}"></script>
+	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/create_gui_settings.js' %}"></script>
+
 
 
 	<!-- for colour picker -->
@@ -25,13 +28,46 @@
 </head>
 
 <body>
+	<p>{% url 'canvas:create_canvas_post' 0  %}</p>
+
+
 <div class= "center_column">
 	{% include "canvas/canvas_create_gui.html" with canvas_html_input_id=0 %}
 
 	
 
    	{% for canvas in user_canvas_set %}
+
+
+   		{% if canvas.texts_in_canvas_set.all %}
+
+   		<div class= "incanvas_text_data" data-ref-canvas-id="{{canvas.id}}" >
+
+	   	{% for text in canvas.texts_in_canvas_set.all %}
+	   
+	   
+	   	<p data-font="{{text.text_font}}"
+	   	  data-font-size="{{text.text_size }}"
+	   	 data-color="{{text.text_color}}"
+	   	 data-x-pos="{{text.coordinates_x}}"
+	   	 data-y-pos="{{text.coordinates_y}}"
+	   	 data-opacity="1" 
+	   	 data-text="{{text.canvas_text}}">
+	   	</p>
+
+	   	{% endfor %}
+
+
+
+	    </div>
+	    {% endif  %}
+	   	
+
+
+
+
 	    {% if not canvas.parent.all %}
+
 
 
 		<p class= "canvas_heading"> 
@@ -66,6 +102,12 @@
 </div>
 
 </body>
+
+	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/canvaswrite_post.js' %}"></script>
+
+
+	
+
 </html>
 
 	
