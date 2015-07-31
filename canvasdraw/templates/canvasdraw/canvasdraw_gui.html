@@ -1,0 +1,16 @@
+
+
+{% load static from staticfiles %}
+<script type="text/javascript" src="{% static 'canvasdraw/js/canvasdraw.js' %}"></script>
+
+
+<h1>  canvasdraw </h1> 
+
+<select id= "draw_tool_selector">
+  <option value="Draw">Draw</option>
+  <option value="Rectangle">Rectangle </option>
+  <option value="Circle">Circle</option>
+  <option value="line">Line</option>
+ </select>
+<canvas  class = "canvas_create" id="0canvasdraw"  >
+Your browser does not support the HTML5 canvas tag.</canvas><br>

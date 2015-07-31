@@ -19,6 +19,12 @@ def home(request):
 	data= {'user_canvas_set':user_canvas_set, 'user_canvas_ids':user_canvas_ids }
 	return render(request, 'canvas/home.html' ,data)
 
+
+def check(request):
+	h = "what"
+
+	return render(request, 'canvas/check.html' )
+
 # def create_canvas_post(request, canvas_id):
 # 	if request.method == 'POST':
 # 		canvas_post_text = request.POST.get('canvas_post')
@@ -75,6 +81,12 @@ def create_canvas_post(request, canvas_id):
   			text_color = text_color[i]
   			)  
   		
+  		
+		if canvas_id == '0' :
+			pass	
+		else:	
+			parent_canvas_obj = Canvas.objects.get(id=canvas_id)
+			parent_canvas_obj.children.add(canvas_obj)
 
 		
 	

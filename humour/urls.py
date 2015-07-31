@@ -16,10 +16,16 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
+
+from . import views
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^humour/' , include('userprofile.urls',namespace="userprofile")),
     url(r'^humour/home/' , include('canvas.urls', namespace="canvas")),
+    url(r'^base/$', views.base, name ='base'),
+
 ]
 
 

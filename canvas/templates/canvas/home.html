@@ -1,9 +1,10 @@
 
+<!DOCTYPE html>
+
 {% load static from staticfiles %}
 <html>
 <head>
 
-	<script>var user_canvas_ids = "{{ user_canvas_ids }}"</script>
 	<link rel="stylesheet" href="{% static 'canvas/style/styles.css' %}" type="text/css"> 
 	<link rel="stylesheet" href="{% static 'canvas/style/buttons.css' %}" type="text/css"> 
 	
@@ -14,10 +15,12 @@
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
 
-	<script type="text/javascript" src="{% static 'canvas/canvasrender.js' %}"></script>
+
+
+	<script type="text/javascript" src="{% static 'canvaswrite/js/canvaswrite_render.js' %}"></script>
 	<script type="text/javascript" src="{% static 'canvas/canvas_comment_button.js' %}"></script>
-	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/canvaswrite.js' %}"></script>
-	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/create_gui_settings.js' %}"></script>
+	
+	<script type="text/javascript" src="{% static 'canvas/js/create_gui_settings.js' %}"></script>
 
 
 
@@ -25,28 +28,42 @@
 	<link rel="stylesheet" href="{{ STATIC_URL }}/static/css/jquery.minicolors.css">
 	<link rel="stylesheet" href="{{ STATIC_URL }}/static/css/bootstrap.min.css"> 
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery.minicolors.min.js"></script>
+
+
+
+
 </head>
 
 <body>
-	<p>{% url 'canvas:create_canvas_post' 0  %}</p>
+
+
+
+
+	 <h1>{% block title %}My amazing site{% endblock %}</h1>
 
 
 <div class= "center_column">
-	{% include "canvas/canvas_create_gui.html" with canvas_html_input_id=0 %}
 
 	
+
+
+
+
+	{% include "canvaswrite/canvaswrite_gui.html" with canvas_html_input_id=0 %}
 
    	{% for canvas in user_canvas_set %}
 
 
    		{% if canvas.texts_in_canvas_set.all %}
 
-   		<div class= "incanvas_text_data" data-ref-canvas-id="{{canvas.id}}" >
+   		<div class= "incanvas_text_data" 
+   		 data-ref-canvas-id="{{canvas.id}}" >
 
 	   	{% for text in canvas.texts_in_canvas_set.all %}
 	   
 	   
-	   	<p data-font="{{text.text_font}}"
+	   	<p 
+	   	data-font="{{text.text_font}}"
 	   	  data-font-size="{{text.text_size }}"
 	   	 data-color="{{text.text_color}}"
 	   	 data-x-pos="{{text.coordinates_x}}"
@@ -83,7 +100,8 @@
 		    {%if not canvas.last_child_canvas %}
 				<button class= "canvas_comment_button"  > comment </button>
 				<div class= "comment_canvas"  > 
-				 {% include "canvas/canvas_create_gui.html" with canvas_html_input_id=canvas.id %}
+				{% include "canvaswrite/canvaswrite_gui.html" with canvas_html_input_id=canvas.id %}
+				
 			
 				</div>
 			{% endif %}
@@ -103,10 +121,9 @@
 
 </body>
 
-	<script type="text/javascript" src="{% static 'canvas/js/canvas_create_gui/canvaswrite_post.js' %}"></script>
+	<script type="text/javascript" src="{% static 'canvaswrite/js/canvaswrite_post.js' %}"></script>
+	<script type="text/javascript" src="{% static 'canvaswrite/js/canvaswrite.js' %}"></script>
 
-
-	
 
 </html>
 

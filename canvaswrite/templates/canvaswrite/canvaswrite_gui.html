@@ -1,0 +1,153 @@
+{% load staticfiles %}
+
+<!--<script type="text/javascript" src="{% static 'canvas/ajax_canvas_post.js' %}"></script>-->
+<head>
+
+
+<link rel="stylesheet" href="{% static 'canvas/style/canvas_create_gui.css' %}" type="text/css">
+ 
+
+
+
+
+</head>
+<div class="tabs">
+  <ul>
+    <li><a href="#tabs-1" style="width:107px">  TEXT  </a></li>
+    <li><a href="#tabs-2" style="width:105px">  DRAW  </a></li>
+    <li><a href="#tabs-3" style="width:105px">  IMAGES </a></li>
+    <li><a href="#tabs-3" style="width:105px">  VIDEO  </a></li>
+    <li><a href="#tabs-3" style="width:107px">  SOUND  </a></li>
+  </ul>
+</div>
+
+
+   
+    <input type="hidden" id="{{canvas_html_input_id}}colour" class="form-control demo" data-control="hue" value="#000000" >
+
+
+
+
+
+
+
+<input type="button" ref_canvas_id="{{canvas_html_input_id}}" class="add_texts" id="{{canvas_html_input_id}}add_texts" value="+ text">
+
+<select id= "{{canvas_html_input_id }}font_selector" class="font_selector"  
+style="width:100px">
+
+  <option value="Arial">Arial</option>
+  <option value="Helvetic"> Helvetic</option>
+  <option value="Comic Sans MS">Comic Sans MS</option>
+  <option value="Times New Roman">Times New Roman</option>
+  <option value="Georgia"> Georgia</option>
+  <option value="Impact"> Impact</option>
+</select>
+
+
+
+<input id="{{canvas_html_input_id }}size_selector" value='15'  type="number" name="quantity" min="15" max="70" class="size_selector">
+
+
+<button id="{{canvas_html_input_id }}layers_button" data-layers-dialog-id="{{canvas_html_input_id }}layer_dialog"  class="layers_button" style="width:230px">layers</button>
+
+<div class="layers_dialog" id="{{canvas_html_input_id }}layer_dialog"
+ title="layers" >
+
+<div class="layers" id="{{canvas_html_input_id }}layers"   >
+
+
+
+</div>  
+</div>  
+
+  
+
+
+<div id = "{{canvas_html_input_id}}canvas_create_div">
+
+<canvas  class = "canvas_create" id="{{canvas_html_input_id}}canvas"  >
+Your browser does not support the HTML5 canvas tag.</canvas><br>
+
+
+</div>
+
+<input type="hidden" id= "{{canvas_html_input_id }}url" data-url="{% url 'canvas:create_canvas_post' canvas_html_input_id  %}" />
+
+
+<form   id= "{{canvas_html_input_id }}canvas_form" class="canvas_form" data-ref-canvas-id ="{{canvas_html_input_id }}"   >
+
+
+	<input  class= "canvas_post_button" type="submit" data-ref-canvas-id ="{{canvas_html_input_id }}"  value="post"  />
+</form>
+
+
+<script>
+
+  $(function() {
+    $( ".tabs" ).tabs();
+  });
+
+   $(".layers_button").button();
+
+
+
+$(function() {
+      $( ".layers_dialog" ).dialog({
+        width: 232,
+        autoOpen: false
+
+     
+      });
+    });
+  
+
+
+
+  $('.layers_button').click(function() {
+     var dialog_id = $(this).attr('data-layers-dialog-id');
+     $('#'+ dialog_id).dialog({
+        position:{ my: "left top", at: "left top", of: this }
+      });
+      $('#'+ dialog_id).dialog('open')
+
+      
+  });
+
+
+  var colpick = $('.demo').each( function() {
+    $(this).minicolors({
+      control: $(this).attr('data-control') || 'hue',
+      inline: $(this).attr('data-inline') === 'true',
+      letterCase: 'lowercase',
+      
+      opacity: true,
+      change: function(hex, opacity) {
+        if(!hex) return;
+       
+        try {
+          console.log(hex + "  " + opacity);
+        } catch(e) {}
+        $(this).select();
+      },
+      //theme: 'bootstrap'
+    });
+  });
+
+
+
+
+
+$(".canvas_post_button").button();
+
+
+
+
+</script>
+
+<!--
+<script>
+ajax_create_canvas("{{canvas_html_input_id }}canvas_form" ,"{{canvas_html_input_id }}" )
+</script>
+
+-->
