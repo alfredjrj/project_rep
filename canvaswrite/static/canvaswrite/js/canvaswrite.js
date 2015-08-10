@@ -122,27 +122,27 @@ var canvaswriteNP= (function() {
 
 
 
-        display_layers: function(ref_canvas_id){
+        // display_layers: function(ref_canvas_id){
 
 
-            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
-            var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
-            var layers_div = document.getElementById(ref_canvas_id+"layers" );
-            $(layers_div).empty();
+        //     var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
+        //     var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
+        //     var layers_div = document.getElementById(ref_canvas_id+"layers" );
+        //     $(layers_div).empty();
 
-            for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
-                var layer_color = document.createElement("div");
-                    layer_color.className= "layer_colour";
-                    layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
-                    layers_div.appendChild(layer_color);
+        //     for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
+        //         var layer_color = document.createElement("div");
+        //             layer_color.className= "layer_colour";
+        //             layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
+        //             layers_div.appendChild(layer_color);
 
-                var layer_info = document.createElement("P");
-                    layer_info.className= "layer_info";
-                    layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
-                    layers_div.appendChild(layer_info);
-            }
-             return ;  
-        },
+        //         var layer_info = document.createElement("P");
+        //             layer_info.className= "layer_info";
+        //             layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
+        //             layers_div.appendChild(layer_info);
+        //     }
+        //      return ;  
+        // },
 
 
         
@@ -152,10 +152,13 @@ var canvaswriteNP= (function() {
             var id = $(addtexts_elm).attr("id");
             var click = $(addtexts_elm).data("clicked") || 0;
             $(addtexts_elm).data("clicked", ++click); 
-            
+
+            var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
+            var canvas_create_dim = canvas_create_elm.getBoundingClientRect();
+
             var incanvas_input_div = document.createElement("div");
             incanvas_input_div.className=ref_canvas_id+"draggable";
-            incanvas_input_div.style.top= "150px";
+            //incanvas_input_div.style.top=  "150px";
             incanvas_input_div.style.position="absolute";
             incanvas_input_div.style.left= "270px";
 
@@ -174,11 +177,10 @@ var canvaswriteNP= (function() {
 
 
             var in_canvas_input_elm = document.getElementById(ref_canvas_id+"in_canvas_input" + click);
-            var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
+            
             var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
           
-             // add defualt postion of input text 
-            console.log(canvas_create_elm.getBoundingClientRect());
+             
 
             document.addEventListener('click', function(evt){
                 
@@ -200,7 +202,7 @@ var canvaswriteNP= (function() {
               
                 stop: function( event, ui ){
 
-                        canvaswriteNP.display_layers(ref_canvas_id);
+                        //canvas.display_layers(ref_canvas_id);
 
                         canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, canvas_create_div_incanvas_inputs, ref_canvas_id );     
                  
@@ -228,18 +230,11 @@ var canvaswriteNP= (function() {
 $(document).ready(function(){
 
 
+    $(".add_texts").click(function(event) {    
 
-
-    create_gui_settingsNP.define_canvas_dim("canvas_create");
-
-
-    $(".add_texts").click(function(event) {     
         canvaswriteNP.in_canvas_input_setup(this , this.getAttribute("ref_canvas_id"));
 
     });
-
-    
-      
 
 });
 

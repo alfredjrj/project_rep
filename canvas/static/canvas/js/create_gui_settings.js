@@ -37,16 +37,6 @@ var create_gui_settingsNP = (function(){
 		},
 
 		
-
-		define_canvas_dim: function(canvas_class){
-			var canvas_create_array = document.getElementsByClassName(canvas_class);
-			for(var i = 0 ; i< canvas_create_array.length ; i++){
-	            var canvas_dim = canvas_create_array[i].getBoundingClientRect();
-	            canvas_create_array[i].width = canvas_dim.width;
-	            canvas_create_array[i].height = canvas_dim.height;
-        	}
-        },
-             
              
 
 		ismouse_in_canvas: function(in_canvas_input ,canvas , evt){
@@ -86,7 +76,7 @@ $(document).ready(function(){
 	// $( ".font_selector" ).selectmenu();
 	$("input[type=submit]").button();
 	
-
+	
 
 
 });

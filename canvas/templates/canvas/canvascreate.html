@@ -1,5 +1,111 @@
+<!--   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	{% include "canvasimage/canvasimage_gui.html"%}
-	{% include "canvasdraw/canvasdraw_gui.html"%}
+<link rel="stylesheet" href="{{ STATIC_URL }}/static/jquery-mobile/themes/blue.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}/static/jquery-mobile/themes/jquery.mobile.icons.min.css">
 
-	{% include "canvaswrite/canvaswrite_gui.html" with canvas_html_input_id=1 %}
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+ -->
+
+
+
+
+<button class = "canvaswrite_but" id="{{ref_canvas_id}}canvaswrite_but"  data-ref-canvas-id="{{ref_canvas_id}}"  style="width:103px; height:30px">TEXT</button>
+
+<button class = "canvasdraw_but" id="{{ref_canvas_id}}canvasdraw_but" data-ref-canvas-id="{{ref_canvas_id}}" style="width:104px; height:30px" >DRAW</button>
+
+<button class = "canvasimage_but" id="{{ref_canvas_id}}canvasimage_but" data-ref-canvas-id="{{ref_canvas_id}}"  style="width:104px; height:30px" >IMAGE</button>
+
+<button class = "canvasvideo_but" id="{{ref_canvas_id}}canvasvideo_but" data-ref-canvas-id="{{ref_canvas_id}}" data-toolbox="canvasvideo_toolbox" style="width:104px; height:30px" >VIDEO</button>
+
+<button class = "canvassound_but" id="{{ref_canvas_id}}canvassound_but" data-ref-canvas-id="{{ref_canvas_id}}" data-toolbox="canvassound_toolbox" style="width:103px; height:30px" >SOUND</button>
+
+
+
+
+<input type="hidden" id="{{ref_canvas_id}}colour"  class="form-control demo" data-control="hue" value="#000000" >
+
+
+
+<button id="{{ref_canvas_id }}layers_button" data-layers-dialog-id="{{ref_canvas_id }}layer_dialog" data-ref-canvas-id="{{ref_canvas_id}}" class="layers_button" style="width:230px; height:25px">layers</button>
+
+<input type="button" data-ref-canvas-id="{{ref_canvas_id}}" class="add_layer" id="{{ref_canvas_id}}add_draw" value="+ layer">
+
+
+
+<div class="layers_dialog" id="{{ref_canvas_id}}layer_dialog"
+ title="layers" >
+
+	<div class="layers" id="{{ref_canvas_id}}layers"   >
+
+
+	</div>  
+</div>
+
+<div class="canvas_layers" id="{{ref_canvas_id}}canvas_layers">
+
+</div>
+
+
+
+
+<div class= "canvascreate_container">
+
+
+
+	<div class= "backgroundtab" >
+		
+		
+		<canvas  class = "canvas_background"   >
+		Your browser does not support the HTML5 canvas tag.</canvas>
+
+	</div> 
+
+
+	<div class="canvaswritetab"  data-toolbox="canvaswrite_toolbox" 
+	id="{{ref_canvas_id}}canvaswritetab">
+			{% include "canvaswrite/canvaswrite_gui.html" with canvas_html_input_id=ref_canvas_id %}
+	</div>
+		
+	<div class="canvasdrawtab"  data-toolbox="canvasdraw_toolbox" id="{{ref_canvas_id}}canvasdrawtab">
+		{% include "canvasdraw/canvasdraw_gui.html" with ref_canvas_id=ref_canvas_id %}
+	</div>
+
+	<div class="canvasimagetab" data-toolbox="canvasimage_toolbox" id="{{ref_canvas_id}}canvasimagetab">
+		{% include "canvasimage/canvasimage_gui.html" with ref_canvas_id=ref_canvas_id %}
+	</div>
+
+</div>
+
+<script>
+$("button").button();
+
+
+
+$(".layers_button").button();
+
+
+
+  var colpick = $('.demo').each( function() {
+    $(this).minicolors({
+      control: $(this).attr('data-control') || 'hue',
+      inline: $(this).attr('data-inline') === 'true',
+      letterCase: 'lowercase',
+      
+      opacity: true,
+      change: function(hex, opacity) {
+        if(!hex) return;
+       
+        try {
+          console.log(hex + "  " + opacity);
+        } catch(e) {}
+        $(this).select();
+      },
+      //theme: 'bootstrap'
+    });
+  });
+
+
+</script>

@@ -1,0 +1,13 @@
+.canvasdraw_toolbox{
+	height:100px;
+	width: 550px;
+	border:1px solid #d3d3d3;
+
+
+}
+
+.draw_tool_selector{
+	position: relative;
+    
+    left: 15px;
+}

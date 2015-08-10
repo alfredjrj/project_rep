@@ -1,6 +1,10 @@
 
+{% load static from staticfiles %}
 
+<link rel="stylesheet" href="{% static 'canvasimage/style/css_canvasimage.css' %}" type="text/css"> 
+
+<div class = "canvasimage_toolbox" id="{{ref_canvas_id}}canvasimage_toolbox">
 <h1>  canvas image draw </h1> 
-
-<canvas  class = "canvas_create" id="{{canvas_html_input_id}}canvasimage"  >
+</div>
+<canvas  class = "canvas_create" id="2canvasimage"  >
 Your browser does not support the HTML5 canvas tag.</canvas><br>

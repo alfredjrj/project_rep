@@ -1,16 +1,45 @@
 
 
 {% load static from staticfiles %}
-<script type="text/javascript" src="{% static 'canvasdraw/js/canvasdraw.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'canvasdraw/style/css_canvasdraw.css' %}" type="text/css"> 
+
+<div class = "canvasdraw_toolbox" id="{{ref_canvas_id}}canvasdraw_toolbox" 
+data-selected-tool="draw">
+	<p>  canvasdraw </p>
+
+<!-- 	<input type="button" data-ref-canvas-id="{{ref_canvas_id}}" class="add_draw" id="{{ref_canvas_id}add_draw" value="+ layer"> -->
+
+<!-- 	<input type="button" class="move" data-ref-canvas-id="{{ref_canvas_id}}"  id="{{ref_canvas_id}move" value="move"> -->
 
 
-<h1>  canvasdraw </h1> 
 
-<select id= "draw_tool_selector">
+<label class="move" data-ref-canvas-id="{{ref_canvas_id}}"  id="{{ref_canvas_id}move" style="width:20px" > </label>
+
+
+	<select class= "draw_tool_selector"  id="draw_tool_selector{{ref_canvas_id}}"  
+	data-ref-canvas-id="{{ref_canvas_id}}" >
   <option value="Draw">Draw</option>
   <option value="Rectangle">Rectangle </option>
   <option value="Circle">Circle</option>
   <option value="line">Line</option>
  </select>
-<canvas  class = "canvas_create" id="0canvasdraw"  >
-Your browser does not support the HTML5 canvas tag.</canvas><br>
+</div>
+
+<div class= "canvas_draw_div" id = "{{ref_canvas_id}}canvas_draw_div" >
+
+<!-- <canvas  class = "canvas_create" id="{{ref_canvas_id}}canvasdraw"  >
+Your browser does not support the HTML5 canvas tag.</canvas><br> -->
+
+</div>
+
+<script>
+ $( ".move" ).button({
+ 	icons:{
+ 		primary:"ui-icon-arrow-4"
+ 	}
+
+ } );
+ 
+//
+</script>
