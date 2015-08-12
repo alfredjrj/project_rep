@@ -85,11 +85,11 @@ var canvasNP= (function() {
 	
 			
         
-        },             
+        },  
 
-        switchtabs: function (thisitem, tabrequestedclass){
+        tab_zindex: function(buttonid){
 
-			var button = document.getElementById(thisitem.id);
+        	var button = document.getElementById(buttonid);
 			var ref_canvas_id = button.getAttribute("data-ref-canvas-id");
 			var canvaswritetab = document.getElementById(ref_canvas_id + "canvaswritetab");
 			var canvasdrawtab = document.getElementById(ref_canvas_id + "canvasdrawtab");
@@ -105,46 +105,53 @@ var canvasNP= (function() {
 
 			var large_zindex = Math.max(canvaswritetab_zindex, canvasimagetab_zindex, canvasdrawtab_zindex ); 
 
+			return {
+		      largest_zindex: large_zindex,
+		      canvaswritetab_zindex: canvaswritetab_zindex,
+		      canvasimagetab_zindex:canvasimagetab_zindex,
+		      canvasdrawtab_zindex:canvasdrawtab_zindex,
+		      ref_canvas_id: ref_canvas_id ,
+
+		    };
+			
+        } ,         
+
+        switchtabs: function (thisitem, tabrequestedclass){
+
+			var tab =  canvasNP.tab_zindex(thisitem.id);
 			var tab_tobe_replaced_class = null;
 
-				if(canvaswritetab_zindex == large_zindex ){   
+				if(tab.canvaswritetab_zindex == tab.largest_zindex){   
 					tab_tobe_replaced_class="canvaswritetab";
 
 				}
-				else if(canvasimagetab_zindex == large_zindex ){
+				else if(tab.canvasimagetab_zindex == tab.largest_zindex ){
 					tab_tobe_replaced_class="canvasimagetab";
 
 				}
-				else if(canvasdrawtab_zindex == large_zindex ){
+				else if(tab.canvasdrawtab_zindex == tab.largest_zindex){
 					tab_tobe_replaced_class="canvasdrawtab";
 				}
 
-				// would be here 
-				var tab_totop_current_zindex = $("#" + ref_canvas_id + tabrequestedclass).css('zIndex');
+			
+				var tab_totop_current_zindex = $("#" + tab.ref_canvas_id + tabrequestedclass).css('zIndex');
 
 				console.log(tab_totop_current_zindex);
 
-				tab_tobe_replaced = document.getElementById(ref_canvas_id + tab_tobe_replaced_class); 
+				tab_tobe_replaced = document.getElementById(tab.ref_canvas_id + tab_tobe_replaced_class); 
 
 				tab_tobe_replaced.style.zIndex= tab_totop_current_zindex; 
 
-				var tabrequested = document.getElementById(ref_canvas_id+ tabrequestedclass);
-				tabrequested.style.zIndex=  large_zindex;
+				var tabrequested = document.getElementById(tab.ref_canvas_id+ tabrequestedclass);
+				tabrequested.style.zIndex=  tab.largest_zindex;
 
-				
-
-			// console.log(large_zindex);
-
-			// console.log(canvaswritetab.id);
-
-			// canvaswritetab.style.zIndex="4" ; 
 		
 			var toolboxshow_class = tabrequested.getAttribute("data-toolbox");
-			toolbox_toshow= document.getElementById(ref_canvas_id + toolboxshow_class); 
+			toolbox_toshow= document.getElementById(tab.ref_canvas_id + toolboxshow_class); 
 			toolbox_toshow.style.visibility= "visible";
 
 			var toolboxhide_class = tab_tobe_replaced.getAttribute("data-toolbox");
-			toolbox_tohide= document.getElementById(ref_canvas_id + toolboxhide_class);
+			toolbox_tohide= document.getElementById(tab.ref_canvas_id + toolboxhide_class);
 			toolbox_tohide.style.visibility="hidden";
 
 			return ;
@@ -157,10 +164,7 @@ var canvasNP= (function() {
             $(addlayer_elm).data("clicked", ++click); 
 
             ref_canvas_id = addlayer_elm.getAttribute("data-ref-canvas-id");
-           
-
             var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
-
             var layer = document.createElement("canvas");
  
             layer.className = "layer"; 
@@ -171,21 +175,44 @@ var canvasNP= (function() {
             //style
             var zindex= click +5 ;
             console.log(zindex);
-            layer.style.zIndex= zindex ;
+            // layer.style.zIndex= zindex ;
             layer.style.border= "2px solid black";
             layer.style.width= "300px" ;
             layer.style.height= "150px" ;
             layer.style.position="absolute";
-            layer.style.left= "200px";
-            layer.style.top="120px";
+            // layer.style.left= "200px";
+            // layer.style.top="120px";
             layer.style.background="lightgrey";
             layer.style.opacity= "0.3"; 
   
+           
+          
+           	var div_layer = document.createElement("div");
+            div_layer.id=ref_canvas_id +"div_layer"+ click;
+            //div_layer.style.background="red";
+            div_layer.style.width= "300px"
+            div_layer.style.height= "150px" ;
+     		div_layer.className = "div_layer"; 
+     		div_layer.style.left= "200px";
+            div_layer.style.top="120px";
+            div_layer.style.position="absolute";
+            div_layer.style.zIndex= zindex ;
+     		 
+  			div_layer.appendChild(layer);
+  			// canvas_draw_div is actually canvas layers
             
             var canvas_draw_div = document.getElementById(ref_canvas_id+"canvas_layers");
-         	canvas_draw_div.appendChild(layer);
+         	canvas_draw_div.appendChild(div_layer);
+         	var div_layer_incanvas_inputs = div_layer.getElementsByClassName("in_canvas_input");
          	
-          
+         	// must move to canvaswrite becasue it hides and shows 
+         	//text inpputs 
+          	$(document).on('click', function(evt){    
+                console.log(canvas_create_elm.getAttribute("id"));
+
+                console.log(create_gui_settingsNP.ismouse_in_canvas(div_layer_incanvas_inputs, layer, evt));
+
+            });
             // canvas_draw_div.setAttribute("data-layer-selected", layer.id );
 
 			      
@@ -197,7 +224,13 @@ var canvasNP= (function() {
 })();  
 
 
+
+
+
+
 $(document).ready(function(){
+
+
 
 
     canvasNP.define_canvas_dim("canvas_create");

@@ -79,8 +79,10 @@ var canvaswriteNP= (function() {
 
         incanvas_input_write: function(in_canvas_input_elm, canvas_create_elm , canvas_create_div_incanvas_inputs, ref_canvas_id){
         
+            // the new incanvas input meta datas gets stored in its elements
+            set_attributes(in_canvas_input_elm , ref_canvas_id);
 
-            set_attributes(in_canvas_input_elm , ref_canvas_id); 
+            //  here is where to cnavas gets picked for drawings  
 
             var canvas_content = canvas_create_elm.getContext('2d');
             // sets maximum line width, line height, and x /y coords for text
@@ -98,8 +100,10 @@ var canvaswriteNP= (function() {
                 var incanvas_input_color= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-color');
                 var incanvas_input_opacity= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-opacity');
                 
+                // the text gets added with all the meta data specification to the canvas 
                 var incanvas_input_dim = canvas_create_div_incanvas_inputs[i].getBoundingClientRect();
                 var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, incanvas_input_dim);
+                
                 this.addTextCnv(canvas_content, canvas_create_div_incanvas_inputs[i].value, mousePos.x, mousePos.y, maxWidth, lineHeight, incanvas_input_font, 
                     incanvas_input_font_size, incanvas_input_color, incanvas_input_opacity);
 
@@ -153,8 +157,6 @@ var canvaswriteNP= (function() {
             var click = $(addtexts_elm).data("clicked") || 0;
             $(addtexts_elm).data("clicked", ++click); 
 
-            var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
-            var canvas_create_dim = canvas_create_elm.getBoundingClientRect();
 
             var incanvas_input_div = document.createElement("div");
             incanvas_input_div.className=ref_canvas_id+"draggable";
@@ -172,32 +174,22 @@ var canvaswriteNP= (function() {
             
             incanvas_input_div.appendChild(incanvas_input);
 
-            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
+            // canvas input is put in here must switch to cavnvas layyer div 
+
+            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_layers");
             canvas_create_div.appendChild(incanvas_input_div);
 
 
             var in_canvas_input_elm = document.getElementById(ref_canvas_id+"in_canvas_input" + click);
-            
             var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
           
-             
+    
+            var main_canvas = document.getElementById(ref_canvas_id+"canvas");
+            var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
+            var  canvas_id = null; 
 
-            document.addEventListener('click', function(evt){
-                
-                console.log(canvas_create_elm.getAttribute("id"));
-                console.log(create_gui_settingsNP.ismouse_in_canvas(canvas_create_div_incanvas_inputs, canvas_create_elm, evt));
-            });
-
-      
-            document.addEventListener("mousemove" , function(event){
-                var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, event);
-                console.log(mousePos);
-                console.log("x" + event.clientX +"" + "y" + event.clientY   );
-            });   
-
-
-            $("."+ref_canvas_id+"draggable").draggable({
-                containment: $("#"+ canvas_create_elm.id),
+              $("."+ref_canvas_id+"draggable").draggable({
+                containment: $("#"+ main_canvas.id),
                 cancel:null ,
               
                 stop: function( event, ui ){
@@ -215,8 +207,69 @@ var canvaswriteNP= (function() {
             });
 
 
-            in_canvas_input_elm.addEventListener('keyup', function(evt){
-                 canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, canvas_create_div_incanvas_inputs, ref_canvas_id); 
+
+            // could be another function adding text to layers
+
+            // change it to on drop 
+            $(".layer").on("mouseenter", function(){
+                // getslayer element
+                   canvas_create_elm =document.getElementById(this.id);
+
+                var div_layer_id = $(canvas_create_elm).closest('div').attr('id');
+                var div_layer= document.getElementById(div_layer_id);
+
+                var div_layer_incanvas_inputs = div_layer.getElementsByClassName("in_canvas_input");
+
+                var canvas_create_dim = canvas_create_elm.getBoundingClientRect(); 
+
+        
+                
+                console.log(ref_canvas_id);
+                console.log(in_canvas_input_elm.id + "the layer id "+ canvas_create_elm.id);
+
+
+
+          
+                document.addEventListener("mousemove" , function(event){
+                    var mousePos = create_gui_settingsNP.getMousePos(canvas_create_elm, event);
+                    console.log(mousePos);
+                    console.log("x" + event.clientX +"" + "y" + event.clientY   );
+                });   
+
+                // this input , do not put all classin there 
+                // put an id 
+                $(in_canvas_input_elm).draggable({
+                    containment: $("#"+ canvas_create_elm.id),
+                    cancel:null ,
+                  
+                    stop: function( event, ui ){
+
+
+                            //canvas.display_layers(ref_canvas_id);
+                            incanvas_input_div.style.zIndex = $(div_layer).css('zIndex') +1;
+
+        //                  get div_layer which is parent of canvas_create elem
+                               
+                            div_layer.appendChild(incanvas_input_div);
+                            canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, div_layer_incanvas_inputs, ref_canvas_id );     
+                     
+                    }
+                });
+
+                $(canvas_create_elm).draggable({
+                    handle: $(canvas_create_elm),
+                    containment: $("#"+ main_canvas.id)
+                });
+
+                $("."+ref_canvas_id+"draggable input").click(function() {
+                    $(this).focus();
+                });
+
+
+                in_canvas_input_elm.addEventListener('keyup', function(evt){
+                     canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, div_layer_incanvas_inputs, ref_canvas_id); 
+                });
+
             });
             
         }
@@ -231,6 +284,7 @@ $(document).ready(function(){
 
 
     $(".add_texts").click(function(event) {    
+
 
         canvaswriteNP.in_canvas_input_setup(this , this.getAttribute("ref_canvas_id"));
 
