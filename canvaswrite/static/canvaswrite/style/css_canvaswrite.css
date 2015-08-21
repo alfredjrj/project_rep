@@ -1,6 +1,7 @@
 .canvaswrite_toolbox{
 
 	height:100px;
+	width: 550px;
 	visibility: hidden;
-	border:1px solid #d3d3d3;
+	border:1px solid #2B2B2B;
 }

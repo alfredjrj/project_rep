@@ -34,22 +34,7 @@ var canvasdrawNP= (function(){
 
 		},
 
-		moveclick: function(){
-
-			$(".move").on("click", function(){
-				var ref_canvas_id = this.getAttribute("data-ref-canvas-id");
-				var toolbox =document.getElementById(ref_canvas_id +"canvasdraw_toolbox");
-				var toolbox_selected_tool = toolbox.setAttribute("data-selected-tool","move");
-
-				var toolbox_selected_toolget = toolbox.getAttribute("data-selected-tool");
-				$(".div_layer").draggable({ 
-					containment: $("#"+ref_canvas_id+"canvas"),
-	                cancel:null ,
-					disabled: false });  
-
-
-			});
-		},
+		
 
 		define_ctx: function(layerid){
 
@@ -75,7 +60,7 @@ var canvasdrawNP= (function(){
 			 
 			/* Mouse Capturing Work */
 			
-
+//  sepficlay selected alyer 
 			$(".layer").on('mousemove', function(event) {
 				var canvas = document.getElementById(this.id);
 				last_mouse.x = mouse.x;
@@ -89,8 +74,13 @@ var canvasdrawNP= (function(){
 		
 
 			$(".layer").on('mousedown', function(e) {
+
+				var selected_layer = $(this).closest(".canvas_layers").attr("data-selected-layer");
+
+				console.log(selected_layer);
+
 				
-				ctx = canvasdrawNP.define_ctx(this.id);
+				ctx = canvasdrawNP.define_ctx(selected_layer);
 		
 				var ref_canvas_id = this.getAttribute("data-ref-canvas-id");
 				var toolbox =document.getElementById(ref_canvas_id +"canvasdraw_toolbox");
@@ -132,7 +122,7 @@ var canvasdrawNP= (function(){
 				
 			};
 
-		},
+		}
 
 
 
@@ -144,11 +134,15 @@ var canvasdrawNP= (function(){
 
 $(document).ready(function(){  
 
-	canvasdrawNP.moveclick();
+	//canvasdrawNP.moveclick();
 	canvasdrawNP.drawclick();
+	canvasdrawNP.draw();
 
 
-	$(".add_layer").click(function(){
+	$(".add_layer").on("click", function(){
+
+		// var selected_layer= canvas_layers.getAttribute("selected_layer"); 
+
 
 		// var ref_canvas_id =  this.getAttribute("data-ref-canvas-id");
 		// console.log(canvasdrawNP.selected_layer(ref_canvas_id));

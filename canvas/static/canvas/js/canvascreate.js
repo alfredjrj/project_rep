@@ -4,25 +4,103 @@
 var canvasNP= (function() {
 
 	return{
-        display_layers: function(ref_canvas_id){
+        // display_layers: function(ref_canvas_id){
 
 
-            var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
-            var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
+        //     //var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
+        //      var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_layers");
+        //     // var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
+        //      var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("layer");
+        //     var layers_div = document.getElementById(ref_canvas_id+"layers" );
+        //     $(layers_div).empty();
+
+        //     for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
+        //         var layer_color = document.createElement("div");
+        //             layer_color.className= "layer_colour";
+        //             layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
+        //             layers_div.appendChild(layer_color);
+
+        //         var layer_info = document.createElement("P");
+        //             layer_info.className= "layer_info";
+        //             layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
+        //             layers_div.appendChild(layer_info);
+        //     }
+        //      return ;  
+        // },
+
+          display_layers: function(ref_canvas_id){
+
+
+            //var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
+             var canvas_layers_div = document.getElementById(ref_canvas_id+"canvas_layers");
+            // var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
+            var all_canvas_layers= canvas_layers_div.getElementsByClassName("layer");
             var layers_div = document.getElementById(ref_canvas_id+"layers" );
             $(layers_div).empty();
+            var current_layer_zIndex= 0;
+            var current_layer=null; 
+            var current_layer_index = null; 
 
-            for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
-                var layer_color = document.createElement("div");
-                    layer_color.className= "layer_colour";
-                    layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
-                    layers_div.appendChild(layer_color);
+            for(var i =0 ;i<all_canvas_layers.length; i++ ){
+             
+                var layer_index = document.createElement('canvas');
+                var context = layer_index.getContext('2d');
 
-                var layer_info = document.createElement("P");
-                    layer_info.className= "layer_info";
-                    layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
-                    layers_div.appendChild(layer_info);
+    
+                layer_index.className="layer_index "+ref_canvas_id+"layer_index";
+                layer_index.id=ref_canvas_id+"layer_index"+i; 
+                layer_index.setAttribute( "data-ref-canvas-id",ref_canvas_id );
+                layer_index.setAttribute("layer_id",all_canvas_layers[i].id ); 
+
+                var layer_index_div = document.createElement("div");
+                layer_index_div.className= "layer_index_div";
+
+                layer_index_div.appendChild(layer_index);
+
+                //apply the old canvas to the new one
+                // if(all_canvas_layers[i].style.zIndex > current_layer_zIndex && canvas_layers_div.getAttribute("selected_index_layer") ==null){
+                   
+                //      canvas_layers_div.setAttribute("selected_index_layer", layer_index.id);
+                //      // layer_index.style.border="4px solid #4776F4";
+
+                // }
+                context.drawImage(all_canvas_layers[i], 0, 0, 300,150);
+                layers_div.appendChild(layer_index_div);
+
+                  
+
             }
+
+            var selected_index_layer_id= canvas_layers_div.getAttribute("data-selected-index-layer");
+            //alert(selected_index_layer_id);
+            if(selected_index_layer_id == undefined){
+                
+            }else{
+                //alert("else");
+            var selected_index_layer= document.getElementById(selected_index_layer_id);
+            selected_index_layer.style.border="4px solid #4776F4";
+            }
+
+           
+
+            $("." + ref_canvas_id+"layer_index").on("click",function(){
+                $("." + ref_canvas_id+"layer_index").each(function(){
+                    this.style.border="2px solid black"; 
+                })
+                //alert("hello");
+                this.style.border="4px solid #4776F4";
+                canvas_layers_div.setAttribute("data-selected-layer",this.getAttribute("layer_id") ); 
+                canvas_layers_div.setAttribute("data-selected-index-layer", this.id);
+                alert(this.id);
+
+            })
+
+
+
+            
+
+
+
              return ;  
         },
 
@@ -164,7 +242,8 @@ var canvasNP= (function() {
             $(addlayer_elm).data("clicked", ++click); 
 
             ref_canvas_id = addlayer_elm.getAttribute("data-ref-canvas-id");
-            var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
+            // shoud be outdated_
+            //var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
             var layer = document.createElement("canvas");
  
             layer.className = "layer"; 
@@ -173,28 +252,28 @@ var canvasNP= (function() {
             layer.setAttribute( "data-ref-canvas-id",ref_canvas_id );
 
             //style
-            var zindex= click +5 ;
+            var zindex= click +3 ;
             console.log(zindex);
-            // layer.style.zIndex= zindex ;
+            layer.style.zIndex= zindex ;
             layer.style.border= "2px solid black";
-            layer.style.width= "300px" ;
-            layer.style.height= "150px" ;
+            layer.style.width= "400px" ;
+            layer.style.height= "200px" ;
             layer.style.position="absolute";
             // layer.style.left= "200px";
             // layer.style.top="120px";
-            layer.style.background="lightgrey";
-            layer.style.opacity= "0.3"; 
+            //layer.style.background="lightgrey";
+            //layer.style.opacity= "0.3"; 
   
            
           
            	var div_layer = document.createElement("div");
             div_layer.id=ref_canvas_id +"div_layer"+ click;
             //div_layer.style.background="red";
-            div_layer.style.width= "300px"
-            div_layer.style.height= "150px" ;
+            div_layer.style.width= "400px"
+            div_layer.style.height= "200px" ;
      		div_layer.className = "div_layer"; 
-     		div_layer.style.left= "200px";
-            div_layer.style.top="120px";
+     		div_layer.style.left= "150px";
+            div_layer.style.top="20px";
             div_layer.style.position="absolute";
             div_layer.style.zIndex= zindex ;
      		 
@@ -207,16 +286,74 @@ var canvasNP= (function() {
          	
          	// must move to canvaswrite becasue it hides and shows 
          	//text inpputs 
-          	$(document).on('click', function(evt){    
-                console.log(canvas_create_elm.getAttribute("id"));
+            //var topmostelements = Array(); 
+          	// $(document).on('click', function(evt){    
+           //      console.log(canvas_create_elm.getAttribute("id"));
 
-                console.log(create_gui_settingsNP.ismouse_in_canvas(div_layer_incanvas_inputs, layer, evt));
+           //      console.log(create_gui_settingsNP.ismouse_in_canvas(div_layer_incanvas_inputs, layer, evt));
 
-            });
+           //  });
             // canvas_draw_div.setAttribute("data-layer-selected", layer.id );
 
+            return  layer.id
 			      
-		}
+		},
+
+        moveclick: function(){
+
+            $(".move").on("click", function(){
+                var ref_canvas_id = this.getAttribute("data-ref-canvas-id");
+                var toolbox =document.getElementById(ref_canvas_id +"canvasdraw_toolbox");
+                var toolbox_selected_tool = toolbox.setAttribute("data-selected-tool","move");
+
+                var toolbox_selected_toolget = toolbox.getAttribute("data-selected-tool");
+                $(".div_layer").draggable({ 
+                    containment: $("#"+ref_canvas_id+"canvas_layers"),
+                    cursor: 'move',
+                    cancel:null ,
+                    disabled: false });  
+
+
+            });
+        },
+
+
+
+
+        resize_handles :function(){
+            $(".div_layer:not(#0div_layer0)")
+            .append('<span class="resize-handle resize-handle-nw"></span>')
+            .append('<span class="resize-handle resize-handle-sw"></span>')
+            .append('<span class="resize-handle resize-handle-ne"></span>')
+            .append('<span class="resize-handle resize-handle-se"></span>')
+            $(".resize-handle").on("mouseover",function(){
+               // alert("over");
+
+            })
+
+            $(".resize_handler").draggable({
+
+
+            })
+
+
+        },
+
+        select_main_layer :function(){
+
+            $(".canvas_layers").each(function(){
+                var ref_canvas_id = this.getAttribute("data-ref-canvas-id");
+
+                this.setAttribute("data-selected-layer", ref_canvas_id+"layer0" );
+                this.setAttribute("data-selected-index-layer", ref_canvas_id+"layer_index0" );
+
+
+                });
+
+
+
+
+        }
 
 
     };
@@ -232,17 +369,40 @@ $(document).ready(function(){
 
 
 
+    canvasNP.select_main_layer();
 
-    canvasNP.define_canvas_dim("canvas_create");
+
+
+
+
+    canvasNP.moveclick();
+    //canvasNP.define_canvas_dim("canvas_create");
+     canvasNP.define_canvas_dim("layer");
 
     $(".add_layer").on("click" ,function(){
+         var ref_canvas_id = this.getAttribute("data-ref-canvas-id");
+        var canvas_layers = document.getElementById(ref_canvas_id+"canvas_layers");
+       
+		var added_layer_id = canvasNP.add_layer(this);
+        canvasNP.resize_handles();
 
-		canvasNP.add_layer(this);
+        var layer_number =  $(this).data("clicked" );
+
+
+        canvas_layers.setAttribute("data-selected-layer", added_layer_id );
+        canvas_layers.setAttribute("data-selected-index-layer", ref_canvas_id+"layer_index"+layer_number);
+        // main_div_layer = document.getElementById("0div_layer0");
+        // var canvas_dim = main_div_layer.getBoundingClientRect();
+        // main_div_layer.width = canvas_dim.width;
+        // main_div_layer.height = canvas_dim.height;
+
+
+
 
 	 });
     
 
-	$(".canvaswrite_but").click(function(event){ 
+	$(".canvaswrite_but").on("click", function(event){ 
 
 		canvasNP.switchtabs(this,"canvaswritetab");
 		 event.preventDefault(); 
@@ -250,7 +410,11 @@ $(document).ready(function(){
 	}) ; 
 
 
-	$(".canvasdraw_but").click(function(event){ 
+
+
+
+
+	$(".canvasdraw_but").on("click", function(event){ 
 
 		canvasNP.switchtabs(this,"canvasdrawtab");
 		 event.preventDefault(); 
@@ -258,7 +422,7 @@ $(document).ready(function(){
 
 	}) ; 
 
-	$(".canvasimage_but").click(function(event){ 
+	$(".canvasimage_but").on("click", function(event){ 
 
 		canvasNP.switchtabs(this,"canvasimagetab");
 		 event.preventDefault(); 

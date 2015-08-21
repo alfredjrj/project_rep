@@ -40,8 +40,10 @@ var create_gui_settingsNP = (function(){
              
 
 		ismouse_in_canvas: function(in_canvas_input ,canvas , evt){
-
+			// an array higher up in the scope  that can hold all the bublled up ids
+			// pick the id with the largest zIndex
 			//document.getElementsByClassName()
+			
 			var rect = canvas.getBoundingClientRect();
 		
 			var istrue = null;

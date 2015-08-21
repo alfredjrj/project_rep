@@ -11,16 +11,20 @@
 
 
 
+{% include "canvas/common_toolbox.html" %} 
 
-<button class = "canvaswrite_but" id="{{ref_canvas_id}}canvaswrite_but"  data-ref-canvas-id="{{ref_canvas_id}}"  style="width:103px; height:30px">TEXT</button>
+<div class="main_navbar_div">
 
-<button class = "canvasdraw_but" id="{{ref_canvas_id}}canvasdraw_but" data-ref-canvas-id="{{ref_canvas_id}}" style="width:104px; height:30px" >DRAW</button>
 
-<button class = "canvasimage_but" id="{{ref_canvas_id}}canvasimage_but" data-ref-canvas-id="{{ref_canvas_id}}"  style="width:104px; height:30px" >IMAGE</button>
+<button class = "canvaswrite_but" id="{{ref_canvas_id}}canvaswrite_but"  data-ref-canvas-id="{{ref_canvas_id}}"  style="width:105px; height:30px">TEXT</button>
 
-<button class = "canvasvideo_but" id="{{ref_canvas_id}}canvasvideo_but" data-ref-canvas-id="{{ref_canvas_id}}" data-toolbox="canvasvideo_toolbox" style="width:104px; height:30px" >VIDEO</button>
+<button class = "canvasdraw_but" id="{{ref_canvas_id}}canvasdraw_but" data-ref-canvas-id="{{ref_canvas_id}}" style="width:105px; height:30px" >DRAW</button>
 
-<button class = "canvassound_but" id="{{ref_canvas_id}}canvassound_but" data-ref-canvas-id="{{ref_canvas_id}}" data-toolbox="canvassound_toolbox" style="width:103px; height:30px" >SOUND</button>
+<button class = "canvasimage_but" id="{{ref_canvas_id}}canvasimage_but" data-ref-canvas-id="{{ref_canvas_id}}"  style="width:107px; height:30px" >IMAGE</button>
+
+<button class = "canvasvideo_but" id="{{ref_canvas_id}}canvasvideo_but" data-ref-canvas-id="{{ref_canvas_id}}" data-toolbox="canvasvideo_toolbox" style="width:105px; height:30px" >VIDEO</button>
+
+<button class = "canvassound_but" id="{{ref_canvas_id}}canvassound_but" data-ref-canvas-id="{{ref_canvas_id}}" data-toolbox="canvassound_toolbox" style="width:105px; height:30px" >SOUND</button>
 
 
 
@@ -28,10 +32,15 @@
 <input type="hidden" id="{{ref_canvas_id}}colour"  class="form-control demo" data-control="hue" value="#000000" >
 
 
+<button type="button" data-ref-canvas-id="{{ref_canvas_id}}" class="add_layer" id="{{ref_canvas_id}}add_layer" value="+ layer" style="width:65px; height:25px" > +layer</button>
+
+
+
 
 <button id="{{ref_canvas_id }}layers_button" data-layers-dialog-id="{{ref_canvas_id }}layer_dialog" data-ref-canvas-id="{{ref_canvas_id}}" class="layers_button" style="width:230px; height:25px">layers</button>
 
-<input type="button" data-ref-canvas-id="{{ref_canvas_id}}" class="add_layer" id="{{ref_canvas_id}}add_draw" value="+ layer">
+</div>
+
 
 
 
@@ -44,9 +53,26 @@
 	</div>  
 </div>
 
-<div class="canvas_layers" id="{{ref_canvas_id}}canvas_layers">
+
+
+<div class="canvas_layers" id="{{ref_canvas_id}}canvas_layers" 
+data-ref-canvas-id ="{{ref_canvas_id}}" >
+<!-- put all the layers here including backbround   must be made auto beucsase
+of all the divs and attrubites-->
+<div id="{{ref_canvas_id}}div_layer0" class="div_layer" style="width:550px; height:275px" >
+	<canvas class="layer", id="{{ref_canvas_id}}layer0" data-ref-canvas-id="{{ref_canvas_id}}" style="width:550px; height:275px"> </canvas>
+
+
 
 </div>
+<form   id= "{{canvas_html_input_id }}canvas_form" class="canvas_form" data-ref-canvas-id ="{{canvas_html_input_id }}"   >
+
+
+	<input  class= "canvas_post_button" type="submit" data-ref-canvas-id ="{{canvas_html_input_id }}"  value="post"  />
+</form>
+</div>
+
+
 
 
 
@@ -56,7 +82,7 @@
 
 
 	<div class= "backgroundtab" >
-		
+		<!-- make  the canvas create the main canvas- background white   -->
 		
 		<canvas  class = "canvas_background"   >
 		Your browser does not support the HTML5 canvas tag.</canvas>
@@ -81,6 +107,9 @@
 
 <script>
 $("button").button();
+
+//alert("{{ref_canvas_id}}");
+
 
 
 

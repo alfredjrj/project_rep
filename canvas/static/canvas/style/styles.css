@@ -9,14 +9,21 @@
 .center_column{
     background-color: #F1F1F1 ;
     position: relative;
-    width: 560px;
+    width: 555px;
     left: 350px;
     top:75px;
 
 
 }
 
+.main_navbar_div{
+    /*background: grey; */
+    /*border-radius: 7px;*/
+    /*border:2px solid black;*/
+    width: 550px;
+   /* background-color: #2E6DA4;*/
 
+}
 
 .canvas{
     border:1px solid #d3d3d3;
@@ -72,3 +79,43 @@ position: relative;
     top: 15px;
    
 } 
+
+
+
+
+
+.resize-handle-ne,
+.resize-handle-se,
+.resize-handle-nw,
+.resize-handle-sw {
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    z-index: 999;
+}
+
+.resize-handle-nw {
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize;
+}
+
+.resize-handle-sw {
+    bottom: -5px;
+    left: -5px;
+    cursor: sw-resize;
+}
+
+.resize-handle-ne {
+    top: -5px;
+    right: -5px;
+    cursor: ne-resize;
+}
+
+.resize-handle-se {
+    bottom: -5px;
+    right: -5px;
+    cursor: se-resize;
+}
