@@ -178,8 +178,10 @@ var canvaswriteNP= (function() {
 
                     // },
 
-        
+                    accept: '.draggable',
+
                     drop: function( event, ui ) {
+                        
 
                         // check its its the top element
                         //alert(topElementArray);
@@ -330,7 +332,7 @@ var canvaswriteNP= (function() {
 
 
             var incanvas_input_div = document.createElement("div");
-            incanvas_input_div.className=ref_canvas_id+"draggable";
+            incanvas_input_div.className="draggable " +ref_canvas_id+"draggable";
             //incanvas_input_div.style.top=  "150px";
             incanvas_input_div.id=ref_canvas_id +"draggable"+ click;
             incanvas_input_div.style.position="absolute";
@@ -401,7 +403,7 @@ $(document).ready(function(){
     });
 
     $(".add_layer").on("click" ,function(){
-
+       
         canvaswriteNP.add_text_to_layers();
           canvaswriteNP.show_incanvas_inputs();
 

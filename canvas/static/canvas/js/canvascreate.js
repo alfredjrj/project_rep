@@ -28,6 +28,30 @@ var canvasNP= (function() {
         //      return ;  
         // },
 
+
+            change_layer_order:function(ref_canvas_id, pre , i){
+
+                  var moveto_layer_index_div = document.getElementById(ref_canvas_id+"layer_index_div"+pre);
+                            var get_layer_index_div= document.getElementById(ref_canvas_id+"layer_index_div"+i);
+                            var moved_down_index_layer = get_layer_index_div.childNodes; 
+                            // alert(pre);
+                            // alert(moved_down_index_layer[0].id); 
+                            // alert(moveto_layer_index_div.id);
+
+                            moved_down_index_layer[0].setAttribute("data-layer-index-div", moveto_layer_index_div.id );
+
+                            var layer_id= moved_down_index_layer[0].getAttribute("layer_id");
+                            
+                            var layer = document.getElementById(layer_id );
+                            alert(layer.id);
+                            layer.setAttribute("data-zindex", Number(pre)+2);
+                            
+
+                            moveto_layer_index_div.appendChild(moved_down_index_layer[0]);
+
+
+            },
+
           display_layers: function(ref_canvas_id){
 
 
@@ -37,11 +61,10 @@ var canvasNP= (function() {
             var all_canvas_layers= canvas_layers_div.getElementsByClassName("layer");
             var layers_div = document.getElementById(ref_canvas_id+"layers" );
             $(layers_div).empty();
-            var current_layer_zIndex= 0;
-            var current_layer=null; 
-            var current_layer_index = null; 
+         
 
-            for(var i =0 ;i<all_canvas_layers.length; i++ ){
+            for(var i =all_canvas_layers.length-1 ;i>=0; i--){
+                console.log(i);
              
                 var layer_index = document.createElement('canvas');
                 var context = layer_index.getContext('2d');
@@ -51,9 +74,16 @@ var canvasNP= (function() {
                 layer_index.id=ref_canvas_id+"layer_index"+i; 
                 layer_index.setAttribute( "data-ref-canvas-id",ref_canvas_id );
                 layer_index.setAttribute("layer_id",all_canvas_layers[i].id ); 
-
+                layer_index.setAttribute("data-layer-index-div", ref_canvas_id+"layer_index_div"+i); 
                 var layer_index_div = document.createElement("div");
+
                 layer_index_div.className= "layer_index_div";
+                layer_index_div.id= ref_canvas_id+"layer_index_div"+i; 
+                layer_index_div.style.width = "160px";
+                layer_index_div.style.height = "70px";
+                layer_index_div.style.border = "2px solid black";
+                layer_index_div.setAttribute("data-layer_index_div-number", i);
+
 
                 layer_index_div.appendChild(layer_index);
 
@@ -64,6 +94,7 @@ var canvasNP= (function() {
                 //      // layer_index.style.border="4px solid #4776F4";
 
                 // }
+               
                 context.drawImage(all_canvas_layers[i], 0, 0, 300,150);
                 layers_div.appendChild(layer_index_div);
 
@@ -81,6 +112,104 @@ var canvasNP= (function() {
             selected_index_layer.style.border="4px solid #4776F4";
             }
 
+            $("." + ref_canvas_id+"layer_index").draggable({ 
+                    containment: $("#"+layers_div.id),
+                    //cursor: 'move', 
+                    cancel:null ,
+                    axis: "y",
+                    start: function(){
+
+                        // layers_div.append(this);
+                        // $(this).parent(".layer_index_div").empty(); 
+                        // //
+
+                    }
+            }); 
+
+            // make a drope able 
+            $(".layer_index_div").droppable({
+                drop : function(event, ui){
+
+                    // if ui.dragable beling to layer_index_div
+                    // fix style 
+                  
+                    console.log(this.id); 
+                    //$(this).empty();
+                    
+                    var layer_index_id = ui.draggable.attr('id');
+                    var layer_index = document.getElementById(layer_index_id );
+
+                    var ref_canvas_id = layer_index.getAttribute("data-ref-canvas-id");
+
+             
+
+                    console.log(layer_index.id);
+
+                    
+                    layer_index.style.top="0px";
+                    layer_index.style.left="0px";
+              
+                    var layer_index_div_moved_id = layer_index.getAttribute("data-layer-index-div");
+                    layer_index.setAttribute("data-layer-index-div", this.id)
+
+                    var  layer_index_div_moved = document.getElementById(layer_index_div_moved_id);
+                    var layer_index_div_droped = document.getElementById(this.id);
+
+
+                    var layer_index_div_moved_number = layer_index_div_moved.getAttribute("data-layer_index_div-number");
+                    var layer_index_div_droped_number = layer_index_div_droped.getAttribute("data-layer_index_div-number");
+
+                    // alert(layer_index_div_moved_id);
+                    // alert(layer_index_div_moved_number);
+                    // alert(layer_index_div_droped_number);
+
+                    // this loop is for if index_layer is moved up
+                    // do one for when indexlayer is  moved down
+                    // works if not over canvas because it donest cause the otherdrop
+                    
+                    if ( Number(layer_index_div_moved_number)< layer_index_div_droped_number) {
+                        var pre=Number(layer_index_div_moved_number);     
+                        for(var i= Number(layer_index_div_moved_number)+1; i<= layer_index_div_droped_number; i++,pre++)
+                        {
+                           
+                          canvasNP.change_layer_order(ref_canvas_id, pre, i );
+
+                        }
+                    }
+
+
+
+                    if ( Number(layer_index_div_moved_number)> layer_index_div_droped_number) {
+                        // moved down 
+                        var pre=Number(layer_index_div_moved_number);     
+                        for(var i= Number(layer_index_div_moved_number)-1; i>= layer_index_div_droped_number; i--,pre--)
+                        {
+                             canvasNP.change_layer_order(ref_canvas_id, pre, i );
+                 
+                        }
+                    }
+
+                    var moved_layer_id = layer_index.getAttribute('layer_id');
+                    moved_layer= document.getElementById(moved_layer_id);
+
+                    moved_layer.setAttribute('data-zindex',Number(layer_index_div_droped_number)+2);
+                    this.appendChild(layer_index);
+                    
+
+
+                     for(var i =all_canvas_layers.length-1 ;i>=0; i--){
+                        all_canvas_layers[i].style.zIndex=all_canvas_layers[i].getAttribute("data-zindex"); 
+
+                        var all_canvas_layers_div = $(all_canvas_layers[i]).closest("div");
+                        $(all_canvas_layers_div).css("z-index", all_canvas_layers[i].getAttribute("data-zindex"));
+
+
+                     }
+                    // rearagent the layer order accordin
+                
+                }
+
+            })
            
 
             $("." + ref_canvas_id+"layer_index").on("click",function(){
@@ -236,6 +365,11 @@ var canvasNP= (function() {
 
 		},
 
+        add_canvas_layer: function(){
+
+
+        },
+
 		add_layer: function(addlayer_elm){
 			var id = $(addlayer_elm).attr("id");
             var click = $(addlayer_elm).data("clicked") || 0;
@@ -252,8 +386,9 @@ var canvasNP= (function() {
             layer.setAttribute( "data-ref-canvas-id",ref_canvas_id );
 
             //style
-            var zindex= click +3 ;
+            var zindex= click +2 ;
             console.log(zindex);
+            layer.setAttribute("data-zindex", zindex);
             layer.style.zIndex= zindex ;
             layer.style.border= "2px solid black";
             layer.style.width= "400px" ;
@@ -276,6 +411,10 @@ var canvasNP= (function() {
             div_layer.style.top="20px";
             div_layer.style.position="absolute";
             div_layer.style.zIndex= zindex ;
+            //  shoudd  add the handles here  
+
+
+            canvasNP.resize_handles(div_layer);
      		 
   			div_layer.appendChild(layer);
   			// canvas_draw_div is actually canvas layers
@@ -320,8 +459,8 @@ var canvasNP= (function() {
 
 
 
-        resize_handles :function(){
-            $(".div_layer:not(#0div_layer0)")
+        resize_handles :function(div_layer){
+            $(div_layer)
             .append('<span class="resize-handle resize-handle-nw"></span>')
             .append('<span class="resize-handle resize-handle-sw"></span>')
             .append('<span class="resize-handle resize-handle-ne"></span>')
@@ -384,7 +523,7 @@ $(document).ready(function(){
         var canvas_layers = document.getElementById(ref_canvas_id+"canvas_layers");
        
 		var added_layer_id = canvasNP.add_layer(this);
-        canvasNP.resize_handles();
+        //canvasNP.resize_handles();
 
         var layer_number =  $(this).data("clicked" );
 
