@@ -34,11 +34,17 @@ var canvasdrawNP= (function(){
 
 		},
 
+
+
 		
 
 		define_ctx: function(layerid){
 
 			var canvas = document.getElementById(layerid);
+			//alert(canvas.id);
+			var canvas_dim =canvas.getBoundingClientRect();
+			//canvas.width= canvas_dim.width;
+			//canvas.height= canvas_dim.height;
 			var ref_canvas_id = canvas.getAttribute("data-ref-canvas-id");
 			var ctx = canvas.getContext('2d');
 			
@@ -74,10 +80,12 @@ var canvasdrawNP= (function(){
 		
 
 			$(".layer").on('mousedown', function(e) {
-
+				// changes to div shoudl be layer
 				var selected_layer = $(this).closest(".canvas_layers").attr("data-selected-layer");
 
-				console.log(selected_layer);
+				//alert(selected_layer);
+
+				//var selected_canvas_layer= $(selected_layer).children("canvas");
 
 				
 				ctx = canvasdrawNP.define_ctx(selected_layer);

@@ -4,30 +4,7 @@
 var canvasNP= (function() {
 
 	return{
-        // display_layers: function(ref_canvas_id){
-
-
-        //     //var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
-        //      var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_layers");
-        //     // var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
-        //      var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("layer");
-        //     var layers_div = document.getElementById(ref_canvas_id+"layers" );
-        //     $(layers_div).empty();
-
-        //     for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
-        //         var layer_color = document.createElement("div");
-        //             layer_color.className= "layer_colour";
-        //             layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
-        //             layers_div.appendChild(layer_color);
-
-        //         var layer_info = document.createElement("P");
-        //             layer_info.className= "layer_info";
-        //             layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
-        //             layers_div.appendChild(layer_info);
-        //     }
-        //      return ;  
-        // },
-
+        
 
             change_layer_order:function(ref_canvas_id, pre , i){
 
@@ -35,7 +12,7 @@ var canvasNP= (function() {
                             var get_layer_index_div= document.getElementById(ref_canvas_id+"layer_index_div"+i);
                             var moved_down_index_layer = get_layer_index_div.childNodes; 
                             // alert(pre);
-                            // alert(moved_down_index_layer[0].id); 
+                            alert(moved_down_index_layer[0].id  + "herer"); 
                             // alert(moveto_layer_index_div.id);
 
                             moved_down_index_layer[0].setAttribute("data-layer-index-div", moveto_layer_index_div.id );
@@ -58,24 +35,104 @@ var canvasNP= (function() {
             //var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
              var canvas_layers_div = document.getElementById(ref_canvas_id+"canvas_layers");
             // var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
+            
             var all_canvas_layers= canvas_layers_div.getElementsByClassName("layer");
+
+            var canvas_div_layers= canvas_layers_div.getElementsByClassName("div_layer");
+
+
+
+            //var all_canvas_layers= canvas_layers_div.getElementsByClassName("div_layer");
+            // div that displays all the layers
             var layers_div = document.getElementById(ref_canvas_id+"layers" );
             $(layers_div).empty();
-         
 
-            for(var i =all_canvas_layers.length-1 ;i>=0; i--){
-                console.log(i);
-             
-                var layer_index = document.createElement('canvas');
-                var context = layer_index.getContext('2d');
+            var all_canvas_layers_arranged = [];
+            //var all_canvas_layers_arrangedb = [];  
 
+             for(var i =canvas_div_layers.length-1 ;i>=0; i--){
+               // alert( canvas_div_layers[i].tagName);
+               // alert( canvas_div_layers[i].style.zIndex);
+               // var canvas_div_items = canvas_div_layers[i].getElementsByClassName("layer");
+               // for( var ii= 0 ; canvas_div_items.length > ii ; ii++ ){
+               //      alert(canvas_div_items[ii].id + "check");
+               //      alert( canvas_div_items[ii].tagName + "tagname");
+               // }
+
+
+               // make all arrays with same zindex into array 2d
+
+               alert(canvas_div_layers[i].style.zIndex + "zindex");
+                all_canvas_layers_arranged[(canvas_div_layers[i].style.zIndex )-2]= canvas_div_layers[i]; 
+
+            }
+
+            alert(all_canvas_layers_arranged.length + "length of all canvaslayers");
     
+            
+          
+            for(var i =all_canvas_layers_arranged.length-1 ;i>=0; i--){
+              
+
+                console.log(i);
+            
+
+                var layer_index = document.createElement('div');
+
+            
+                
+
                 layer_index.className="layer_index "+ref_canvas_id+"layer_index";
                 layer_index.id=ref_canvas_id+"layer_index"+i; 
                 layer_index.setAttribute( "data-ref-canvas-id",ref_canvas_id );
-                layer_index.setAttribute("layer_id",all_canvas_layers[i].id ); 
-                layer_index.setAttribute("data-layer-index-div", ref_canvas_id+"layer_index_div"+i); 
+                // rename to div layer 
+                layer_index.setAttribute("layer_id",all_canvas_layers_arranged[i].id  ); 
+             
+               
+                layer_index.setAttribute("data-layer-index-div", ref_canvas_id+"layer_index_div"+i);                 
+
+                var canvas_div_items = all_canvas_layers_arranged[i].getElementsByClassName("layer");
+               for( var ii= 0 ; canvas_div_items.length > ii ; ii++ ){
+
+
+                    if(canvas_div_items[ii].tagName == "CANVAS"){
+                        layer_index.setAttribute("data-layer-id", canvas_div_items[ii].id );
+                         
+                         //alert("taggednadf");
+                         var layer_index_canvas = document.createElement('canvas');
+                         var context = layer_index_canvas.getContext('2d');
+                        context.drawImage( canvas_div_items[ii], 0, 0, 300,150);
+
+                        layer_index_canvas.style.width = "160px";
+                        layer_index_canvas.style.height = "70px";
+
+                          layer_index.appendChild(layer_index_canvas);
+
+                    } 
+
+                    if(canvas_div_items[ii].tagName == "IMG"){
+                        alert(canvas_div_items[ii].src);
+                         var layer_index_img = document.createElement('img');
+                         layer_index_img.src = canvas_div_items[ii].src; 
+                          layer_index_img.style.width = "160px";
+                        layer_index_img.style.height = "70px";
+                        layer_index_img.style.position = "absolute";
+                        layer_index_img.style.left= "0px";
+                        layer_index_img.style.top="0px";
+                        
+                         layer_index.appendChild(layer_index_img);
+
+                    }
+
+
+                    // if img 
+               }
+
+              
+
                 var layer_index_div = document.createElement("div");
+
+
 
                 layer_index_div.className= "layer_index_div";
                 layer_index_div.id= ref_canvas_id+"layer_index_div"+i; 
@@ -85,25 +142,21 @@ var canvasNP= (function() {
                 layer_index_div.setAttribute("data-layer_index_div-number", i);
 
 
+
+
                 layer_index_div.appendChild(layer_index);
 
-                //apply the old canvas to the new one
-                // if(all_canvas_layers[i].style.zIndex > current_layer_zIndex && canvas_layers_div.getAttribute("selected_index_layer") ==null){
-                   
-                //      canvas_layers_div.setAttribute("selected_index_layer", layer_index.id);
-                //      // layer_index.style.border="4px solid #4776F4";
-
-                // }
+        
                
-                context.drawImage(all_canvas_layers[i], 0, 0, 300,150);
+              
                 layers_div.appendChild(layer_index_div);
 
                   
 
             }
-
+            // canvas_layers_div  main canvas 
             var selected_index_layer_id= canvas_layers_div.getAttribute("data-selected-index-layer");
-            //alert(selected_index_layer_id);
+            alert(selected_index_layer_id);
             if(selected_index_layer_id == undefined){
                 
             }else{
@@ -117,17 +170,12 @@ var canvasNP= (function() {
                     //cursor: 'move', 
                     cancel:null ,
                     axis: "y",
-                    start: function(){
-
-                        // layers_div.append(this);
-                        // $(this).parent(".layer_index_div").empty(); 
-                        // //
-
-                    }
+        
             }); 
 
             // make a drope able 
             $(".layer_index_div").droppable({
+                accept:".layer_index",
                 drop : function(event, ui){
 
                     // if ui.dragable beling to layer_index_div
@@ -138,8 +186,11 @@ var canvasNP= (function() {
                     
                     var layer_index_id = ui.draggable.attr('id');
                     var layer_index = document.getElementById(layer_index_id );
+                    //alert(layer_index.id); 
 
                     var ref_canvas_id = layer_index.getAttribute("data-ref-canvas-id");
+
+
 
              
 
@@ -197,15 +248,16 @@ var canvasNP= (function() {
                     
 
 
-                     for(var i =all_canvas_layers.length-1 ;i>=0; i--){
-                        all_canvas_layers[i].style.zIndex=all_canvas_layers[i].getAttribute("data-zindex"); 
+                     for(var i =all_canvas_layers_arranged.length-1 ;i>=0; i--){
+             
 
-                        var all_canvas_layers_div = $(all_canvas_layers[i]).closest("div");
-                        $(all_canvas_layers_div).css("z-index", all_canvas_layers[i].getAttribute("data-zindex"));
+                        all_canvas_layers_arranged[i].style.zIndex=all_canvas_layers_arranged[i].getAttribute("data-zindex"); 
+
+                       
 
 
                      }
-                    // rearagent the layer order accordin
+           
                 
                 }
 
@@ -218,7 +270,7 @@ var canvasNP= (function() {
                 })
                 //alert("hello");
                 this.style.border="4px solid #4776F4";
-                canvas_layers_div.setAttribute("data-selected-layer",this.getAttribute("layer_id") ); 
+                canvas_layers_div.setAttribute("data-selected-layer",this.getAttribute("data-layer-id") ); 
                 canvas_layers_div.setAttribute("data-selected-index-layer", this.id);
                 alert(this.id);
 
@@ -232,10 +284,12 @@ var canvasNP= (function() {
 
              return ;  
         },
-
+       // defines layer 0 for comments and  main post 
+       // fuction used incanvas write render 
         define_canvas_dim: function(canvas_class){
 
 			var canvas_create_array = document.getElementsByClassName(canvas_class);
+           
 			for(var i = 0 ; i< canvas_create_array.length ; i++){
 	            var canvas_dim = canvas_create_array[i].getBoundingClientRect();
 	            canvas_create_array[i].width = canvas_dim.width;
@@ -243,56 +297,7 @@ var canvasNP= (function() {
         	}
         },
              
-        define_canvas_dimen: function(){
-
-        	var defined = false; 
-
-       
-
-        	var canvas_create_array = document.getElementsByTagName("CANVAS");
-        	console.log(canvas_create_array.length);
-
-        	var canvas_elements = null ; 
-
-			for(var i = 0 ; i< canvas_create_array.length ; i++){
-				console.log(canvas_create_array[i]);
-
-	            var canvas_dim = canvas_create_array[i].getBoundingClientRect();
-	            canvas_create_array[i].width = canvas_dim.width;
-	            canvas_create_array[i].height = canvas_dim.height;
-	            canvas_elements = i;
-        	}
-        		console.log(canvas_elements + "canvasele");
-        		console.log(canvas_create_array.length);
-        	if(canvas_elements +1 == canvas_create_array.length  ){
-        		
-
-        		defined = true; 
-        	}
-
-        	return defined; 
-
-   //      	$("canvas").each(function(){
-   //      		console.log(this.id);
-   //      		canvas = document.getElementById(this.id);
-   //      		if(canvas== null ){
-
-   //      			return; 
-
-   //      		}
-   //      		else{
-
-   //      			var canvas_dim = canvas.getBoundingClientRect();
-	  //           	canvas.width = canvas_dim.width;
-	  //           	canvas.height = canvas_dim.height;
-   //      		}
-
-        
-       // 	});
-	
-			
-        
-        },  
+      
 
         tab_zindex: function(buttonid){
 
@@ -411,6 +416,7 @@ var canvasNP= (function() {
             div_layer.style.top="20px";
             div_layer.style.position="absolute";
             div_layer.style.zIndex= zindex ;
+            //div_layer.setAttribute("data-zindex", zindex);
             //  shoudd  add the handles here  
 
 
@@ -456,27 +462,123 @@ var canvasNP= (function() {
             });
         },
 
+        saveEventState: function(e, $container){
+          // Save the initial event details and container state
+            var event_state = {}; 
+            event_state.container_width = $container.width();
+            event_state.container_height = $container.height();
+            event_state.container_left = $container.offset().left; 
+            event_state.container_top = $container.offset().top;
+            event_state.mouse_x = (e.clientX || e.pageX || e.originalEvent.touches[0].clientX) + $(window).scrollLeft(); 
+            event_state.mouse_y = (e.clientY || e.pageY || e.originalEvent.touches[0].clientY) + $(window).scrollTop();
+
+            // This is a fix for mobile safari
+            // For some reason it does not allow a direct copy of the touches property
+            if(typeof e.originalEvent.touches !== 'undefined'){
+                event_state.touches = [];
+                $.each(e.originalEvent.touches, function(i, ob){
+                  event_state.touches[i] = {};
+                  event_state.touches[i].clientX = 0+ob.clientX;
+                  event_state.touches[i].clientY = 0+ob.clientY;
+                });
+            }
+            event_state.evnt = e;
+            return event_state; 
+        },
+
+        resizeImage :function(layerimg_id, layer_id , div_layer_id, width, height){
+            var resize_canvas = document.getElementById(layer_id);
+            var resize_div = document.getElementById( div_layer_id);
+            var resize_layerimg = document.getElementById(layerimg_id);
+
+            resize_div.style.width= width + "px";
+            resize_div.style.height= height + "px" ;
+            resize_canvas.style.width = width + "px";
+            resize_canvas.style.height = height + "px" ;
+            resize_canvas.style.border = "2px solid black";
+            resize_layerimg.style.width= width + "px";
+            resize_layerimg.style.height= height + "px"; 
+            // resize_canvas.getContext('2d').drawImage(orig_src, 0, 0, width, height);   
+            // $(image_target).attr('src', resize_canvas.toDataURL("image/png"));  
+        },
+
+        resizing :function( e, layerimg_id, layer_id , div_layer_id, event_state, $container ){ 
+            var mouse={},width,height,left,top,offset=$container.offset();
+            mouse.x = (e.clientX || e.pageX || e.originalEvent.touches[0].clientX) + $(window).scrollLeft(); 
+            mouse.y = (e.clientY || e.pageY || e.originalEvent.touches[0].clientY) + $(window).scrollTop();
+
+            width = mouse.x - event_state.container_left;
+            height = mouse.y  - event_state.container_top;
+            left = event_state.container_left;
+            top = event_state.container_top;
+
+           // if(constrain || e.shiftKey){
+               // height = width / orig_src.width * orig_src.height;
+            //}
+
+            //if(width > min_width && height > min_height && width < max_width && height < max_height){
+              canvasNP.resizeImage(layerimg_id, layer_id , div_layer_id, width, height);  
+              // Without this Firefox will not re-calculate the the image dimensions until drag end
+              $container.offset({'left': left, 'top': top});        
+           // }
+        }, 
 
 
+        endResize: function(e){
+            e.preventDefault();
+            $(document).off('mouseup touchend', this.endResize);
+            $(document).off('mousemove touchmove', this.resizing);
+        }, 
+
+        startResize :function(e){
+                 e.preventDefault();
+                e.stopPropagation();
+           
+                var div_layer_id = $(e.target).parent("div").attr("id"); 
+                var layer_id = $("#"+div_layer_id).children(".layer").attr("id");
+                var layerimg_id = $("#" +div_layer_id).children(".layerimg").attr("id");
+                //alert(layerimg_id);
+                // var layer_idd = $("#"+div_layer_id).children(".layer");
+                // alert(layer_idd.length);
+
+                var $div_layer = $("#" + div_layer_id); 
+              
+
+                var state =canvasNP.saveEventState(e, $div_layer );
+
+
+                $(document).on('mousemove',  function(e){
+
+                    canvasNP.resizing(e, layerimg_id, layer_id , div_layer_id, state, $div_layer  ); 
+                });
+                $(document).on('mouseup',  canvasNP.endResize);
+
+            //alert("adfasdf"); 
+        },
+
+
+      
 
         resize_handles :function(div_layer){
+
+       
+
+
             $(div_layer)
             .append('<span class="resize-handle resize-handle-nw"></span>')
             .append('<span class="resize-handle resize-handle-sw"></span>')
             .append('<span class="resize-handle resize-handle-ne"></span>')
-            .append('<span class="resize-handle resize-handle-se"></span>')
-            $(".resize-handle").on("mouseover",function(){
-               // alert("over");
-
-            })
-
-            $(".resize_handler").draggable({
+            .append('<span class="resize-handle resize-handle-se"></span>');
 
 
-            })
+      
+
+             $(div_layer).on('mousedown', '.resize-handle', this.startResize);
 
 
         },
+
+    
 
         select_main_layer :function(){
 
@@ -530,10 +632,7 @@ $(document).ready(function(){
 
         canvas_layers.setAttribute("data-selected-layer", added_layer_id );
         canvas_layers.setAttribute("data-selected-index-layer", ref_canvas_id+"layer_index"+layer_number);
-        // main_div_layer = document.getElementById("0div_layer0");
-        // var canvas_dim = main_div_layer.getBoundingClientRect();
-        // main_div_layer.width = canvas_dim.width;
-        // main_div_layer.height = canvas_dim.height;
+
 
 
 

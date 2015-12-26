@@ -13,9 +13,9 @@ var canvasimageNP= (function() {
 
 	    	var image_layer = document.createElement("img");
  
-            image_layer.className = "layer"; 
+            image_layer.className = "layer layerimg"; 
       		image_layer.draggable="true" ;
-            image_layer.id=ref_canvas_id +"layer"+ click;
+            image_layer.id=ref_canvas_id +"layerimg"+ click;
             image_layer.setAttribute( "data-ref-canvas-id",ref_canvas_id );
             image_layer.src = source;
             image_layer.width= newWidth;
@@ -32,8 +32,14 @@ var canvasimageNP= (function() {
             div.style.height= newHeight + "px"; 
 
             // only delete the canvas 
-            $(div).empty(); 
-          
+
+            //$(div).empty(); 
+            var layer = document.getElementById(ref_canvas_id +"layer"+ click);
+            layer.style.width = newWidth+ "px";
+            layer.style.height = newHeight+ "px";
+
+
+          	//div.removeChild(layer );
 
             div.appendChild(image_layer);
 

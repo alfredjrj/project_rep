@@ -299,29 +299,6 @@ var canvaswriteNP= (function() {
 
 
 
-        // display_layers: function(ref_canvas_id){
-
-
-        //     var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_create_div");
-        //     var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
-        //     var layers_div = document.getElementById(ref_canvas_id+"layers" );
-        //     $(layers_div).empty();
-
-        //     for(var i =0 ;i<canvas_create_div_incanvas_inputs.length; i++ ){
-        //         var layer_color = document.createElement("div");
-        //             layer_color.className= "layer_colour";
-        //             layer_color.style.background=  canvas_create_div_incanvas_inputs[i].getAttribute("data-color");
-        //             layers_div.appendChild(layer_color);
-
-        //         var layer_info = document.createElement("P");
-        //             layer_info.className= "layer_info";
-        //             layer_info.innerHTML= i + " " + canvas_create_div_incanvas_inputs[i].value ;
-        //             layers_div.appendChild(layer_info);
-        //     }
-        //      return ;  
-        // },
-
-
         
           
         in_canvas_input_setup: function ( addtexts_elm, ref_canvas_id){
