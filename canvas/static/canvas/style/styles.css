@@ -119,3 +119,23 @@ position: relative;
     right: -5px;
     cursor: se-resize;
 }
+
+.layer{
+
+    border: 2px solid black;
+    width: 400px ;
+    height: 200px;
+    position: absolute;
+}
+
+.div_layer{
+
+    width:400px ;
+    height:200px ;
+    left:0px;
+    top:0px;
+  position:absolute;
+
+}
+
+

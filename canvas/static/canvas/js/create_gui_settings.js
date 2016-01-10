@@ -26,15 +26,25 @@ var create_gui_settingsNP = (function(){
 			return font_brush_size_selector
 		},
 
-
-		getMousePos: function (canvas, evt) {
-		    var rect = canvas.getBoundingClientRect();
+// u are passing  the canvas input here 
+		getMousePos_element: function (canvas_layer, element) {
+		    var canvas_layer_dim = canvas_layer.getBoundingClientRect();
+		    var  element_dim =  element.getBoundingClientRect();
 		    return {
-		      x: evt.x - rect.left,
-		      y: evt.y - rect.top,
+		      x:  element_dim.x - canvas_layer_dim.left,
+		      y: element_dim.y - canvas_layer_dim.top,
 
 		    };
 		},
+
+		getMousePos_event: function (canvas_layer, event) {
+		    var canvas_layer_dim = canvas_layer.getBoundingClientRect();
+		    return {
+		      x:  event.clientX - canvas_layer_dim.left,
+		      y:  event.clientY - canvas_layer_dim.top,
+
+		    };
+		 },
 
 		
              

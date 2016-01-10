@@ -59,13 +59,14 @@
 data-ref-canvas-id ="{{ref_canvas_id}}" >
 <!-- put all the layers here including backbround   must be made auto beucsase
 of all the divs and attrubites-->
-<div id="{{ref_canvas_id}}div_layer0" class="div_layer" data-zindex="2" style="width:550px; height:275px; z-index:2" >
+<div id="{{ref_canvas_id}}div_layer0" class="div_layer" data-zindex="2" style="width:550px; height:275px; z-index:2;  position:static;" >
+
 	<canvas class="layer" data-zindex="2" id="{{ref_canvas_id}}layer0" 
-	data-ref-canvas-id="{{ref_canvas_id}}" style="width:550px; height:275px; z-index:2"> </canvas>
-
-
+	data-ref-canvas-id="{{ref_canvas_id}}" style="width:550px; height:275px; z-index:2 ;
+	border: 0px; "> </canvas>
 
 </div>
+
 <form   id= "{{canvas_html_input_id }}canvas_form" class="canvas_form" data-ref-canvas-id ="{{canvas_html_input_id }}"   >
 
 
@@ -79,6 +80,8 @@ of all the divs and attrubites-->
 
 
 <div class= "canvascreate_container">
+
+	
 
 
 

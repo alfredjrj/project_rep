@@ -1,19 +1,4 @@
-var draw_gui_settingsNP = (function(){
 
-	return{
-
-		getMousePos: function (canvas, evt) {
-		    var rect = canvas.getBoundingClientRect();
-		    return {
-		      x: evt.clientX - rect.left,
-		      y: evt.clientY - rect.top,
-
-		    };
-		}
-
-	};
-
-})();
 
 var canvasdrawNP= (function(){
 
@@ -68,13 +53,14 @@ var canvasdrawNP= (function(){
 			
 //  sepficlay selected alyer 
 			$(".layer").on('mousemove', function(event) {
-				var canvas = document.getElementById(this.id);
+				var canvas_layer = document.getElementById(this.id);
 				last_mouse.x = mouse.x;
 			    last_mouse.y = mouse.y;
-			 	mousePos = draw_gui_settingsNP.getMousePos(canvas, event);
+			 	mousePos = create_gui_settingsNP.getMousePos_event(canvas_layer, event);
 				mouse.x = mousePos.x ; 
 				mouse.y = mousePos.y; 
-			  
+
+			
 			});
 
 		

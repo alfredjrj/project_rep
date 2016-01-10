@@ -5,3 +5,14 @@
 	visibility: hidden;
 	border:1px solid #2B2B2B;
 }
+
+
+.input_layer{
+
+	position:absolute;
+	left:0px;
+	top: 0px;
+	border: 2px solid grey; 
+	height:60px ;
+	width:200px; 
+}

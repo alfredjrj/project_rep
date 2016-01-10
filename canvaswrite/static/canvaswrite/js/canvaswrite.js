@@ -20,19 +20,18 @@ var canvaswriteNP= (function() {
     } 
 
 
-    function set_attributes(in_canvas_input_elm,ref_canvas_id ,layer){
+    function set_attributes(incanvas_input_elm,ref_canvas_id , canvas_layer){
 
-        in_canvas_input_elm.setAttribute('data-font-size',create_gui_settingsNP.get_size(ref_canvas_id) );
-        in_canvas_input_elm.setAttribute('data-font', create_gui_settingsNP.get_font(ref_canvas_id)  );
-        in_canvas_input_elm.setAttribute('data-color',create_gui_settingsNP.get_colour(ref_canvas_id) );
-        in_canvas_input_elm.setAttribute('data-opacity',create_gui_settingsNP.get_opacity(ref_canvas_id) );
+        incanvas_input_elm.setAttribute('data-font-size',create_gui_settingsNP.get_size(ref_canvas_id) );
+        incanvas_input_elm.setAttribute('data-font', create_gui_settingsNP.get_font(ref_canvas_id)  );
+        incanvas_input_elm.setAttribute('data-color',create_gui_settingsNP.get_colour(ref_canvas_id) );        
+        incanvas_input_elm.setAttribute('data-opacity',create_gui_settingsNP.get_opacity(ref_canvas_id) );
     
 
-        var incanvas_input_dim = in_canvas_input_elm.getBoundingClientRect();
-        var mousePos = create_gui_settingsNP.getMousePos(layer, incanvas_input_dim);
+        var mousePos = create_gui_settingsNP.getMousePos_element(canvas_layer, incanvas_input_elm);
 
-        in_canvas_input_elm.setAttribute('data-x-pos', Math.round(mousePos.x) );
-        in_canvas_input_elm.setAttribute('data-y-pos',  Math.round(mousePos.y) );
+        incanvas_input_elm.setAttribute('data-x-pos', Math.round(mousePos.x) );
+        incanvas_input_elm.setAttribute('data-y-pos',  Math.round(mousePos.y) );
 
 
     }
@@ -75,38 +74,37 @@ var canvaswriteNP= (function() {
    
         
 
-        incanvas_input_write: function(in_canvas_input_elm, layer , canvas_create_div_incanvas_inputs, ref_canvas_id){
+        incanvas_input_write: function(incanvas_input_elm, canvas_layer , ref_canvas_id){
         
             // the new incanvas input meta datas gets stored in its elements
-            set_attributes(in_canvas_input_elm , ref_canvas_id, layer);
+            set_attributes(incanvas_input_elm , ref_canvas_id, canvas_layer);
 
             //  here is where to cnavas gets picked for drawings  
-
-            var canvas_content = layer.getContext('2d');
+            var canvas_content = canvas_layer.getContext('2d');
             // sets maximum line width, line height, and x /y coords for text
-            var maxWidth = layer.width - 20;
+            var maxWidth = canvas_layer.width - 20;
             var lineHeight = 25;
-            var pos = (layer.width - maxWidth) / 2;
+            var pos = (canvas_layer.width - maxWidth) / 2;
             
 
-            clearCanvas(layer); 
+            clearCanvas(canvas_layer); 
 
-            for(var i =0; i<canvas_create_div_incanvas_inputs.length; i++ ){
+            //for(var i =0; i<canvas_create_div_incanvas_inputs.length; i++ ){
 
-                var incanvas_input_font_size = $("#"+canvas_create_div_incanvas_inputs[i].id).attr('data-font-size');
-                var incanvas_input_font= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-font');
-                var incanvas_input_color= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-color');
-                var incanvas_input_opacity= $("#" + canvas_create_div_incanvas_inputs[i].id).attr('data-opacity');
+                var incanvas_input_font_size = $("#"+incanvas_input_elm.id).attr('data-font-size');
+                var incanvas_input_font= $("#" + incanvas_input_elm.id).attr('data-font');
+                var incanvas_input_color= $("#" + incanvas_input_elm.id).attr('data-color');
+                var incanvas_input_opacity= $("#" + incanvas_input_elm.id).attr('data-opacity');
                 
                 // the text gets added with all the meta data specification to the canvas 
-                var incanvas_input_dim = canvas_create_div_incanvas_inputs[i].getBoundingClientRect();
-                var mousePos = create_gui_settingsNP.getMousePos(layer, incanvas_input_dim);
+            
+                var mousePos = create_gui_settingsNP.getMousePos_element(canvas_layer, incanvas_input_elm);
                 
-                this.addTextCnv(canvas_content, canvas_create_div_incanvas_inputs[i].value, mousePos.x, mousePos.y, maxWidth, lineHeight, incanvas_input_font, 
+                this.addTextCnv(canvas_content, incanvas_input_elm.value, mousePos.x, mousePos.y, maxWidth, lineHeight, incanvas_input_font, 
                     incanvas_input_font_size, incanvas_input_color, incanvas_input_opacity);
 
 
-            }
+           // }
 
         },
 
@@ -163,66 +161,53 @@ var canvaswriteNP= (function() {
         add_text_to_layers : function(){
               
             var topElementArray = Array();
-            // selected layer 
+ 
                 $( ".layer").droppable({
 
-                    over: function(){
-             
-               
+                    over: function(){             
+                        // this is layer id  
                         topElementArray.push($(this).attr('id'));
+                        console.log("over"+this.id); 
                     },
-
-                    // out: function(){
-                    //     alert(out);
-                    //     topElementArray=[];
-
-                    // },
 
                     accept: '.draggable',
 
                     drop: function( event, ui ) {
                         
 
-                        // check its its the top element
-                        //alert(topElementArray);
+                       // this.id is layer that is dropped on
+                       
                         if(this.id == topElementArray[topElementArray.length-1]){
 
-
-
+                
+                            var input_layer =  $(ui.draggable).children(".input_layer").get(0); 
+                                                 
+                          
                             var ref_canvas_id=  this.getAttribute("data-ref-canvas-id");
-                            
-                            var   canvas_create_elm =document.getElementById(this.id);
+                            var canvas_layer =document.getElementById(this.id);
+                           
 
-                            var div_layer_id = $(canvas_create_elm).closest('div').attr('id');
+                            var div_layer_id = $(canvas_layer).closest('div').attr('id');
                             var div_layer= document.getElementById(div_layer_id);
-                            var div_layer_incanvas_inputs = div_layer.getElementsByClassName("in_canvas_input");
-                            var canvas_create_dim = canvas_create_elm.getBoundingClientRect(); 
+                            var canvas_create_dim = canvas_layer.getBoundingClientRect(); 
 
                             // the event is called
-                            if(this.id != ref_canvas_id+"layer0" &&  ui.draggable.attr('class') !="div_layer ui-draggable ui-draggable-handle ui-draggable-dragging" ){
+                            if(ui.draggable.attr('class') !="div_layer ui-draggable ui-draggable-handle ui-draggable-dragging" ){
 
                                 var incanvas_input_id =ui.draggable.attr('data-incanvas-input-id');
-                                var in_canvas_input_elm = document.getElementById(incanvas_input_id);
+                                var incanvas_input_elm = document.getElementById(incanvas_input_id);
                                 var incanvas_input_div_id = ui.draggable.attr('id');
-                                var incanvas_input_div = document.getElementById(incanvas_input_div_id);
-                               
-
-                              
+                                var incanvas_input_div = document.getElementById(incanvas_input_div_id);                              
 
                                 incanvas_input_div.style.zIndex = $(div_layer).css('zIndex') +1;
                                 var check = $(incanvas_input_div).parent().attr("class");
-                                //alert(check);
-            //                  get div_layer which is parent of canvas_create elem
-                                 // 
-                               // alert(div_layer.id); 
-                                console.log(in_canvas_input_elm.id + "the layer id "+ canvas_create_elm.id);
+                           
+                                console.log(incanvas_input_elm.id + "the layer id "+ canvas_layer.id);
                             
                                 if(check != "div_layer" && check !="div_layer ui-draggable ui-draggable-handle"){
                                   
                                     div_layer.appendChild(incanvas_input_div);
-                                    // so it doenst glitch when input is droped
-                                    incanvas_input_div.style.top = this.style.top ; 
-                                    incanvas_input_div.style.left = this.style.left;
+                    
 
                                        $(  incanvas_input_div).draggable({
                                     containment: $(this).parent(), 
@@ -230,65 +215,21 @@ var canvaswriteNP= (function() {
 
                                     });
 
-                                    in_canvas_input_elm.addEventListener('keyup', function(evt){
-                                         canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, div_layer_incanvas_inputs, ref_canvas_id); 
+
+                                    incanvas_input_elm.addEventListener('keyup', function(evt){
+                                         canvaswriteNP.incanvas_input_write(incanvas_input_elm, input_layer, ref_canvas_id); 
                                     });
 
 
                                 }
-                            canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, div_layer_incanvas_inputs, ref_canvas_id );     
-                            topElementArray = [];
-                          
-
-                            // $(canvas_create_elm).draggable({
-                            //     handle: $(canvas_create_elm),
-                            //     cancel:null ,
-                            //    // containment: $("#"+ main_canvas.id)
-                            // });
-                            }else{
-                                topElementArray = [];
-
-
-                                 if(this.id == ref_canvas_id+"layer0"  && ui.draggable.attr('class') !="div_layer ui-draggable ui-draggable-handle ui-draggable-dragging"){
-                                    //ref_canvas_id+"canvas_layers"
-                                    alert(canvas_create_elm.id);
-                            
-                                    var incanvas_input_id =ui.draggable.attr('data-incanvas-input-id');
-                                    var in_canvas_input_elm = document.getElementById(incanvas_input_id);
-                                    var incanvas_input_div_id = ui.draggable.attr('id');
-                                    var incanvas_input_div = document.getElementById(incanvas_input_div_id);
-                                   
-                                    incanvas_input_div.style.zIndex = $(div_layer).css('zIndex') +1;
-                                    var check = $(incanvas_input_div).parent().attr("class");
-
-
-
-                                    if(check != "div_layer" && check !="div_layer ui-draggable ui-draggable-handle"){
-                                  
-                                        div_layer.appendChild(incanvas_input_div);
-
-                                           $(  incanvas_input_div).draggable({
-                                        containment: $(this).parent(), 
-                                        cancel:null ,
-
-                                        });
-
-                                        in_canvas_input_elm.addEventListener('keyup', function(evt){
-                                             canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, div_layer_incanvas_inputs, ref_canvas_id); 
-                                        });
-
-
-                                    }
-
-                                     canvaswriteNP.incanvas_input_write(in_canvas_input_elm, canvas_create_elm, div_layer_incanvas_inputs, ref_canvas_id ); 
-                                }
-                            // ends the else statment    
-
+                            canvaswriteNP.incanvas_input_write(incanvas_input_elm, input_layer, ref_canvas_id );     
+                            topElementArray = [];       
+                                
                             }
-                            
+                          
                         // ends the toparray if stament
                         }
-
+                  
                         // ends drop 
                     }
 
@@ -301,7 +242,7 @@ var canvaswriteNP= (function() {
 
         
           
-        in_canvas_input_setup: function ( addtexts_elm, ref_canvas_id){
+        incanvas_input_setup: function ( addtexts_elm, ref_canvas_id){
 
             var id = $(addtexts_elm).attr("id");
             var click = $(addtexts_elm).data("clicked") || 0;
@@ -310,36 +251,32 @@ var canvaswriteNP= (function() {
 
             var incanvas_input_div = document.createElement("div");
             incanvas_input_div.className="draggable " +ref_canvas_id+"draggable";
-            //incanvas_input_div.style.top=  "150px";
             incanvas_input_div.id=ref_canvas_id +"draggable"+ click;
+            incanvas_input_div.setAttribute( 'data-incanvas-input-id',ref_canvas_id +"in_canvas_input"+ click );
+
+            //style
             incanvas_input_div.style.position="absolute";
             incanvas_input_div.style.left= "270px";
-            incanvas_input_div.setAttribute( 'data-incanvas-input-id',ref_canvas_id +"in_canvas_input"+ click );
-            //incavnas_input_div.style.zIndex= "20";
+            
+
             var incanvas_input = document.createElement("input");
             incanvas_input.type = "text";
             incanvas_input.className = "in_canvas_input"; // set the CSS class
-            incanvas_input.draggable="true" ;
             incanvas_input.id=ref_canvas_id +"in_canvas_input"+ click;
             incanvas_input.setAttribute( "ref_canvas_id",ref_canvas_id );
 
-            
-            incanvas_input_div.appendChild(incanvas_input);
+            var input_layer=  document.createElement('canvas');
+            input_layer.className = "input_layer";
+            input_layer.id= "input_layer" +click //+ num
+     
 
-            // canvas input is put in here must switch to cavnvas layyer div 
+            incanvas_input_div.appendChild(input_layer);
+            incanvas_input_div.appendChild(incanvas_input);
 
             var canvas_create_div = document.getElementById(ref_canvas_id+"canvas_layers");
             canvas_create_div.appendChild(incanvas_input_div);
 
 
-            var in_canvas_input_elm = document.getElementById(ref_canvas_id+"in_canvas_input" + click);
-            var canvas_create_div_incanvas_inputs= canvas_create_div.getElementsByClassName("in_canvas_input");
-          
-    
-            //var main_canvas = document.getElementById(ref_canvas_id+"canvas");
-            //var canvas_create_elm = document.getElementById(ref_canvas_id+"canvas");
-            var  canvas_id = null; 
-            // containmnet to div_layer0 
              $( incanvas_input_div).draggable({
                 containment: $("#"+ ref_canvas_id+"canvas_layers"),
                     cancel:null ,
@@ -349,12 +286,11 @@ var canvaswriteNP= (function() {
 
 
 
-            $("."+ref_canvas_id+"draggable input").on("click", function() {
-                $(this).focus();
+            $("."+ref_canvas_id+"draggable").on("click", function() {
+                var input = $(this).children("input").focus() // get input inside div
+         
 
             });
-          
-
 
             
         }
@@ -366,16 +302,13 @@ var canvaswriteNP= (function() {
 
 
 $(document).ready(function(){
-    // text for the defualt layer
-      //canvaswriteNP.add_text_to_layers();
-
-     //canvaswriteNP.show_incanvas_inputs();
-      canvaswriteNP.add_text_to_layers();
-          canvaswriteNP.show_incanvas_inputs();
+ 
+    canvaswriteNP.add_text_to_layers();
+    canvaswriteNP.show_incanvas_inputs();
     $(".add_texts").on("click", function(event) {    
 
 
-        canvaswriteNP.in_canvas_input_setup(this , this.getAttribute("ref_canvas_id"));
+        canvaswriteNP.incanvas_input_setup(this , this.getAttribute("ref_canvas_id"));
 
     });
 
