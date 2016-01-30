@@ -2,25 +2,26 @@
 
 ##Create a social networking  photoshop web application 
 
-add layers 
+-add layers 
 
-draw 
+-draw 
 
-add text
+-add text
 
-add video
+-add image 
 
-create gifs 
+-add video
+
+-create gifs 
 
 ##have core edit functions 
 
-crop 
+-crop 
 
-change colors 
+-change colors 
 
-resize 
+-resize 
 
-Use python cv to recognize faces in videos and 
-overlay user image of choice 
+###Use python cv to recognize faces in videos and overlay user image of choice.
 
 
