@@ -1,6 +1,6 @@
 # humourUS
 
-Create a social networking  photoshop web application 
+##Create a social networking  photoshop web application 
 
 add layers 
 
@@ -12,7 +12,7 @@ add video
 
 create gifs 
 
-have core edit functions 
+##have core edit functions 
 
 crop 
 
